@@ -1,11 +1,28 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 
 var GarageActions = {
-    updateGarage: function(garage){
+    saveGarage: function(garageId){
       AppDispatcher.dispatch({
-        actionType: 'UPDATE_GARAGE',
-        garage: garage
+        actionType: 'SAVE_GARAGE',
+        garageId: garageId
       });
+    },
+    updateGarageInput: function(garage){
+      AppDispatcher.dispatch({
+        actionType: 'UPDATE_GARAGE_INPUT',
+        garage: garage
+      })
+    },
+    editGarage: function(garageId){
+      AppDispatcher.dispatch({
+        actionType: 'EDIT_GARAGE',
+        garageId: garageId
+      })
+    },
+    displayGarageSection: function(){
+      AppDispatcher.dispatch({
+        actionType: 'DISPLAY_GARAGESECTION'
+      })
     }
 }
 module.exports = GarageActions;

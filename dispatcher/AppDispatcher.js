@@ -1,14 +1,24 @@
 var Dispatcher = require('flux').Dispatcher;
 var AppDispatcher = new Dispatcher();
 var GarageStore = require('../stores/GarageStore');
-
+var SectionStore = require('../stores/SectionStore');
 AppDispatcher.register(function (action) {
   switch(action.actionType) {
-    case "UPDATE_GARAGE":
-      GarageStore.updateGarageHandler(action.garage);
+    case "SAVE_GARAGE":
+      GarageStore.updateGarageHandler(action.garageId);
       GarageStore.emitChange();
       break;
-    default:
+    case 'UPDATE_GARAGE_INPUT':
+      GarageStore.updateGarageInputHandler(action.garage);
+      GarageStore.emitChange();
+      break;
+    case 'EDIT_GARAGE':
+      GarageStore.updateGarageEditableHandler(action.garageId);
+      GarageStore.emitChange();
+    case 'DISPLAY_GARAGESECTION':
+      SectionStore.updateCurrentSection('garage');
+      SectionStore.emitNewSection();
+      break;
       // no op
   }
 })
