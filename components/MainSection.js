@@ -4,10 +4,10 @@ var MainSection = React.createClass({
 
   render: function(){
     var currentSection;
-    if(this.props.section==='garage')
-      currentSection = <GarageMainSection/>
+    if(this.props.section==='garage' ||this.props.section==="garageSupplierList")
+      currentSection = <GarageMainSection section={this.props.section}/>
     if(this.props.section==='supplier')
-      currentSection = <SupplierMainSection/>
+      currentSection = <SupplierMainSection section={this.props.section}/>
     return(
       <div>
         {currentSection}

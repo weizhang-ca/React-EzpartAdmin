@@ -1,6 +1,7 @@
 var EventEmitter = require('events').EventEmitter;
 var React = require('react');
 var assign = require('object-assign');
+
 var SectionStore = assign({}, EventEmitter.prototype, {
     mainSection: '',
 

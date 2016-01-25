@@ -1,14 +1,15 @@
 var React = require('react');
 var GarageItem = require('./GarageItem');
+var SupplierItem = require('./SupplierItem');
 var GarageStore = require('../stores/GarageStore');
 var GarageActions = require('../actions/GarageActions');
 
 var GarageMainSection = React.createClass({
     getInitialState: function(){
-      console.log("the state is: " + GarageStore.getAll());
       return {
         allGarages: GarageStore.getAll(),
-        allEditables: GarageStore.getAllEditable()
+        allEditables: GarageStore.getAllEditable(),
+        supplierList: GarageStore.getGarageSupplierList()
       };
     },
 
@@ -20,24 +21,42 @@ var GarageMainSection = React.createClass({
       GarageStore.removeChangeListener(this._onChange);
     },
     render: function(){
-      var allGarages = this.state.allGarages;
-      var allEditables = this.state.allEditables;
-      var garages = [];
-      for(var key in allGarages){
-        garages.push(
-          <GarageItem
-              garage={allGarages[key]}
-              garageId={key}
-              saveGarage={this._saveGarage}
-              editGarage={this._editGarage}
-              updateGarageInput={this._updateGarageInput}
-              isEditing={allEditables[key]}
-          />
-      );
+      var currentSection;
+      if(this.props.section==='garage'){
+        var allGarages = this.state.allGarages;
+        var allEditables = this.state.allEditables;
+        var garages = [];
+        for(var key in allGarages){
+          garages.push(
+            <GarageItem
+                garage={allGarages[key]}
+                garageId={key}
+                saveGarage={this._saveGarage}
+                editGarage={this._editGarage}
+                updateGarageInput={this._updateGarageInput}
+                isEditing={allEditables[key]}
+                displaySupplierList={this._getSupplierList}
+            />
+        );
+        }
+        currentSection = garages;
       }
-
+      else if(this.props.section==='garageSupplierList'){
+        var supplierList = this.state.supplierList;
+        console.log(supplierList);
+        var garageSuppliers = [];
+        for(var key in supplierList){
+          garageSuppliers.push(
+            <SupplierItem
+              supplier = {supplierList[key]}
+              supplierId = {key}
+              />
+          );
+        }
+        currentSection = garageSuppliers;
+      }
       return(
-        <ul>{garages}</ul>
+        <ul>{currentSection}</ul>
       );
     },
     _saveGarage: function(garageId){
@@ -47,13 +66,16 @@ var GarageMainSection = React.createClass({
       GarageActions.editGarage(garageId);
     },
     _updateGarageInput: function(garage){
-      console.log(garage);
       GarageActions.updateGarageInput(garage);
+    },
+    _getSupplierList: function(garageId){
+      GarageActions.displaySupplierList(garageId);
     },
     _onChange: function(){
       this.setState({
         allGarages: GarageStore.getAll(),
-        allEditables: GarageStore.getAllEditable()
+        allEditables: GarageStore.getAllEditable(),
+        supplierList: GarageStore.getGarageSupplierList()
       });
     }
 });

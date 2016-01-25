@@ -33,6 +33,7 @@ var GarageItem = React.createClass({
               <td><div className="view">{this.props.garage.email}</div>{inputEmail}</td>
               <td><div className="view"><button onClick={this._handleEditOnClick}>edit</button></div>{saveButton}</td>
               <td><button onClick={this._handleDeleteOnClick}>delete</button></td>
+              <td><button onClick={this._handleSupplierListOnClick}>supllier list</button></td>
             </tr>
             </table>
           </li>;
@@ -43,6 +44,9 @@ var GarageItem = React.createClass({
  },
  _handleDeleteOnClick: function(){
 
+ },
+ _handleSupplierListOnClick: function(){
+   this.props.displaySupplierList(this.props.garageId);
  },
  _saveOnClick: function() {
    this.props.saveGarage(this.props.garageId);

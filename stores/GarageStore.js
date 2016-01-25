@@ -11,7 +11,7 @@ var GarageStore = assign({}, EventEmitter.prototype, {
               '1':false,
               '2':false
     },
-
+    garageSupplierList:{},
     addChangeListener: function(callback){
       this.on('change',callback);
     },
@@ -26,6 +26,15 @@ var GarageStore = assign({}, EventEmitter.prototype, {
     },
     getAllEditable: function(){
       return this.isEditables;
+    },
+    getGarageSupplierList: function(garageId){
+        var list = {
+                    1:{supplierName:'Test Supplier1', address:'999th Road1', city:'Toronto1', phone:'5555555555', email:'test1@test'},
+                    2:{supplierName:'Test Supplier2', address:'999th Road2', city:'Toronto2', phone:'5555555555', email:'test2@test'}
+                  }
+        this.garageSupplierList = list;
+        return this.garageSupplierList;
+
     },
     updateGarageHandler: function(garageId){
       //this.garages = assign({}, this.garages, garage);

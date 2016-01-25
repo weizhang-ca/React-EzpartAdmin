@@ -23,6 +23,12 @@ var GarageActions = {
       AppDispatcher.dispatch({
         actionType: 'DISPLAY_GARAGESECTION'
       })
+    },
+    displaySupplierList: function(garageId){
+      AppDispatcher.dispatch({
+        actionType: 'DISPLAY_SUPPLIERLIST',
+        garageId: garageId
+      });
     }
 }
 module.exports = GarageActions;

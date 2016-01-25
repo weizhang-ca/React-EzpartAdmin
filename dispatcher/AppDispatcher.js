@@ -19,6 +19,10 @@ AppDispatcher.register(function (action) {
       SectionStore.updateCurrentSection('garage');
       SectionStore.emitNewSection();
       break;
+    case 'DISPLAY_SUPPLIERLIST' :
+      GarageStore.getGarageSupplierList(action.garageId);
+      SectionStore.updateCurrentSection('garageSupplierList');
+      SectionStore.emitNewSection();
       // no op
   }
 })
