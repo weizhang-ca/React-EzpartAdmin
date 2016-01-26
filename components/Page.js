@@ -2,6 +2,7 @@ var React = require('react');
 var SectionStore = require('../stores/SectionStore');
 var Header = require('./Header');
 var MainSection = require('./MainSection');
+import { Router, Route, Link } from 'react-router';
 var Page = React.createClass({
 
   getInitialState: function(){
@@ -19,8 +20,7 @@ var Page = React.createClass({
     return (
       <div>
         <Header/>
-        <MainSection section={this.state.section}/>
-        
+        {this.props.children}
        </div>
     )
   },

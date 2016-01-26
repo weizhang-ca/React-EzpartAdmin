@@ -1,6 +1,7 @@
 var React = require('react');
 var classNames = require('classNames');
 var assign = require('object-assign');
+import { Router, Route, Link, browserHistory } from 'react-router';
 
 var GarageItem = React.createClass({
 
@@ -11,6 +12,7 @@ var GarageItem = React.createClass({
     var inputPhone;
     var inputEmail;
     var saveButton;
+    var garageId = this.props.garageId;
     if(this.props.isEditing){
       inputGarageName = <input type="text" name="garageName" value={this.props.garage.garageName} onChange={this._handleChange}/>;
       inputAddress = <input type="text" name="address" value={this.props.garage.address}  onChange={this._handleChange}/>;
@@ -33,7 +35,7 @@ var GarageItem = React.createClass({
               <td><div className="view">{this.props.garage.email}</div>{inputEmail}</td>
               <td><div className="view"><button onClick={this._handleEditOnClick}>edit</button></div>{saveButton}</td>
               <td><button onClick={this._handleDeleteOnClick}>delete</button></td>
-              <td><button onClick={this._handleSupplierListOnClick}>supllier list</button></td>
+              <td><button onClick={this._handleSupplierListOnClick}><Link to="garageSupplier" params={{garageId:this.props.garageId}}>supllier list</Link></button></td>
             </tr>
             </table>
           </li>;
