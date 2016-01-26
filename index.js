@@ -1,23 +1,15 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Page = require('./components/Page');
-var MainSection = require('./components/MainSection');
-var Header = require('./components/Header');
-var GarageList = require('./components/GarageList');
-var GarageItem = require('./components/GarageItem');
-var SupplierList = require('./components/SupplierList');
-import { Router, Route, Link, browserHistory } from 'react-router';
+import 'babel-core/polyfill'
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import App from './containers/App'
+import configureStore from './store/configStore'
 
-ReactDOM.render(
-  (
-  <Router>
-    <Route path="/" component={Page}>
-      <Route component={MainSection}>
-        <Route path="gareges" component={GarageList} />
-        <Route path="garages/:garageId/supplierlist" handler={require('./components/SupplierList')} />
-      </Route>
-    </Route>
-  </Router>
-  ),
-  document.querySelector('#example')
-);
+const store = configureStore()
+
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
