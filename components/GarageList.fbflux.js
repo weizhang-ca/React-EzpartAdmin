@@ -4,7 +4,8 @@ var SupplierItem = require('./SupplierItem');
 var GarageStore = require('../stores/GarageStore');
 var GarageActions = require('../actions/GarageActions');
 
-var GarageMainSection = React.createClass({
+var GarageList = React.createClass({
+  /*
     getInitialState: function(){
       return {
         allGarages: GarageStore.getAll(),
@@ -12,7 +13,7 @@ var GarageMainSection = React.createClass({
         supplierList: GarageStore.getGarageSupplierList()
       };
     },
-
+*/
     componentDidMount: function(){
       GarageStore.addChangeListener(this._onChange);
     },
@@ -22,7 +23,7 @@ var GarageMainSection = React.createClass({
     },
     render: function(){
       var currentSection;
-      if(this.props.section==='garage'){
+      if(this.props.section==='garage'||true){
         var allGarages = this.state.allGarages;
         var allEditables = this.state.allEditables;
         var garages = [];
@@ -80,4 +81,4 @@ var GarageMainSection = React.createClass({
     }
 });
 
-module.exports = GarageMainSection;
+module.exports = GarageList;

@@ -1,8 +1,15 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Page = require('./components/Page');
+import 'babel-core/polyfill'
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import App from './containers/App'
+import configureStore from './store/configStore'
 
-ReactDOM.render(
-  <Page/>,
-  document.querySelector('#example')
-);
+const store = configureStore()
+
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)

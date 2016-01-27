@@ -1,19 +1,24 @@
-var React = require('react');
-var GarageMainSection = require('./GarageMainSection');
-var MainSection = React.createClass({
+import React, {Component, PropTypes} from 'react';
+import GarageList from './GarageList';
 
-  render: function(){
-    var currentSection;
-    if(this.props.section==='garage' ||this.props.section==="garageSupplierList")
-      currentSection = <GarageMainSection section={this.props.section}/>
-    if(this.props.section==='supplier')
-      currentSection = <SupplierMainSection section={this.props.section}/>
+class MainSection extends Component{
+
+  render(){
+    const{actions, garageList} = this.props;
+    console.log(this.props);
     return(
-      <div>
-        {currentSection}
-      </div>
+        <div>
+          <GarageList
+            garageList = {garageList}
+            actions = {actions}
+          />
+        </div>
     );
   }
-});
+}
+MainSection.propTypes = {
+  actions: PropTypes.object.isRequired,
+  garageList: PropTypes.object.isRequired
+}
 
-module.exports = MainSection;
+export default MainSection;

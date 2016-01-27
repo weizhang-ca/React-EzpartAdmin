@@ -1,0 +1,7 @@
+export const SAVE_GARAGE = 'SAVE_GARAGE';
+export const REMOVE_GARAGE = 'REMOVE_GARAGE';
+export const ADD_GARAGE = 'ADD_GARAGE';
+export const GET_GARAGE_LIST = 'GET_GARAGE_LIST';
+export const SAVE_SUPPLIER = 'SAVE_SUPPLIER';
+export const REMOVE_SUPPLIER = 'REMOVE_SUPPLIER';
+export const ADD_SUPPLIER = 'ADD_SUPPLIER';
