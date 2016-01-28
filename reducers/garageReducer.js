@@ -16,6 +16,10 @@ export default function garageReducer(state=initialState, action){
       console.log('new state is');
       console.log(newStateGarageList);
       return {garageList: newStateGarageList};
+    case DISPLAY_SUPPLIERLIST:
+      return {
+        supplierList: action.supplierList
+      }
     default:
       return state;
   }

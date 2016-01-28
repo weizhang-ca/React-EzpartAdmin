@@ -9,9 +9,15 @@ export function removeGarage(key){
 export function addGarage(garage){
   return {type: types.ADD_GARAGE, garage:garage}
 }
-export function getGarageList(garageList){
+export function displayGarageList(garageList){
   return {
       type: types.GET_GARAGE_LIST,
       garageList: garageList
   }
+export function dispalySupplierList(supplierList){
+  return {
+      type: types.GET_SUPPLIER_LIST,
+      supplierList: supplierList
+  }
+}
 }

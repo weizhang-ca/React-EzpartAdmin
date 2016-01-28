@@ -7,13 +7,13 @@ import * as EzpartActions from '../actions/ezpartActions';
 
 class App extends Component{
   render(){
-    const {garageList, actions} = this.props;
+    const {garageList, actions, supplierList} = this.props;
     console.log('App says 2: ');
     console.log(garageList);
     return(
       <div>
-        <Header getGarageList={actions.getGarageList} />
-        <MainSection garageList={garageList} actions={actions}/>
+        <Header getGarageList={actions.getGarageList||{}} />
+        <MainSection garageList={garageList} supplierList={supplierList} actions={actions}/>
       </div>
     );
   }
@@ -25,9 +25,11 @@ App.propTypes = {
 
 function mapStateToProps(state){
       console.log('App says 1: ');
-      console.log(state.garage.garageList);
+      console.log(state.garageList);
+      console.log(state.supplierList)
   return{
-    garageList: state.garage.garageList
+    garageList: state.garageList,
+    supplierList: state.supplierList
   }
 }
 

@@ -4,7 +4,7 @@ import GarageList from './GarageList';
 class MainSection extends Component{
 
   render(){
-    const{actions, garageList} = this.props;
+    const{actions, garageList, supplierList} = this.props;
     console.log(this.props);
     return(
         <div>
