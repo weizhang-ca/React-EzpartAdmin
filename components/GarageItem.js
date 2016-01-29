@@ -1,6 +1,7 @@
-import React, {Component, PropTypes} from 'react';
-import classNames from 'classnames';
-import assign from 'object-assign';
+import React, {Component, PropTypes} from 'react'
+import classNames from 'classnames'
+import assign from 'object-assign'
+import { Router, Route, Link, browserHistory } from 'react-router'
 
 class GarageItem extends Component{
   constructor(props, context){
@@ -42,7 +43,7 @@ class GarageItem extends Component{
               <td><div className="view">{this.props.garage.email}</div>{inputEmail}</td>
               <td><div className="view"><button onClick={this.handleEditClick.bind(this)}>edit</button></div>{saveButton}</td>
               <td><button onClick={this._handleDeleteOnClick}>delete</button></td>
-              <td><button onClick={this.handleSupplierListClick.bind(this)}>supllier list</button></td>
+              <td><Link to={`/garages/${garageId}/supplierlist`}>supllier list</Link></td>
             </tr>
             </table>
           </li>;
@@ -51,13 +52,7 @@ class GarageItem extends Component{
   handleEditClick(){
     this.setState({editable:true});
   }
-  handleSupplierListClick(){
-    var supplierList = {
-      "1":{supplierName:'Test Supplier 1', address:'123th Avenue', city:'MTL', phone:'5145555555',email:'testSupplier1@test.com'},
-      "2":{supplierName:'TestSupplier 2', address:'222th Avenue', city:'MTL', phone:'5145555555',email:'testSupplier2@test.com'}
-    };
-    this.props.getSupplierList(supplierList);
-  }
+
   handleChange(event){
     var garageId = this.props.garageId;
     var updatedGarage = {};

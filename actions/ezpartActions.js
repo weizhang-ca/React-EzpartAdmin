@@ -14,10 +14,10 @@ export function displayGarageList(garageList){
       type: types.GET_GARAGE_LIST,
       garageList: garageList
   }
+}
 export function dispalySupplierList(supplierList){
   return {
-      type: types.GET_SUPPLIER_LIST,
+      type: types.DISPLAY_SUPPLIERLIST,
       supplierList: supplierList
   }
-}
 }

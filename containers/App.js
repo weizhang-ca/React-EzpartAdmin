@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes, cloneElement } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
@@ -7,13 +7,26 @@ import * as EzpartActions from '../actions/ezpartActions';
 
 class App extends Component{
   render(){
-    const {garageList, actions, supplierList} = this.props;
     console.log('App says 2: ');
-    console.log(garageList);
+    console.log(this.props)
+    const {garageList, actions, supplierList} = this.props;
+    var children = null
+    if(this.props.children !== null){
+      children = cloneElement(
+        this.props.children,
+        {
+          garageList: garageList,
+          actions: actions,
+          supplierList: supplierList
+        }
+      )
+    }
     return(
       <div>
-        <Header getGarageList={actions.getGarageList||{}} />
-        <MainSection garageList={garageList} supplierList={supplierList} actions={actions}/>
+        <Header displayGarageList={actions.displayGarageList||{}} />
+        {
+          children
+        }
       </div>
     );
   }
@@ -25,11 +38,12 @@ App.propTypes = {
 
 function mapStateToProps(state){
       console.log('App says 1: ');
-      console.log(state.garageList);
-      console.log(state.supplierList)
+      console.log(state)
+      console.log(state.garage.garageList);
+      console.log(state.supplier.supplierList)
   return{
-    garageList: state.garageList,
-    supplierList: state.supplierList
+    garageList: state.garage.garageList,
+    supplierList: state.supplier.supplierList
   }
 }
 
