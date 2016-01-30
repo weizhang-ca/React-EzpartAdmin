@@ -5,8 +5,8 @@ class MainSection extends Component{
 
   render(){
     const{actions, garageList, supplierList} = this.props;
-    console.log('main section says: ')
-    console.log(this.props)
+    console.log('Main section says: ')
+    console.log(supplierList)
     var children = this.props.children==null?
     this.props.children:
     cloneElement(

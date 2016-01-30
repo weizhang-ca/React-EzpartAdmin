@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import SupplierItem from './SupplierItem'
+import {Link} from 'react-router'
 class SupplierList extends Component{
 
   componentDidMount(){
@@ -26,15 +27,13 @@ class SupplierList extends Component{
     }
     this.props.actions.dispalySupplierList(supplierList)
   }
-  handleAddNewSupplierClick(){
 
-  }
   render(){
     var supplierArray = []
     var addNewSupplierButton = null
     const {supplierList, garage} = this.props
     if(this.props.params.garageId>0){
-      addNewSupplierButton = <button onClick="">Add New Supplier</button>
+      addNewSupplierButton = <button><Link to={`/garages/${this.props.params.garageId}/addSupplier`}>Add New Supplier</Link></button>
     }
     for(var key in supplierList){
       supplierArray.push(

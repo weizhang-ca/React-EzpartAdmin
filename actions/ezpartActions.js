@@ -21,3 +21,9 @@ export function dispalySupplierList(supplierList){
       supplierList: supplierList
   }
 }
+export function addSupplier(supplier){
+  return{
+    type: types.ADD_SUPPLIER,
+    supplier:supplier
+  }
+}

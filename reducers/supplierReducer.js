@@ -1,4 +1,4 @@
-import {DISPLAY_SUPPLIERLIST} from '../constants/ActionTypes'
+import {DISPLAY_SUPPLIERLIST, ADD_SUPPLIER} from '../constants/ActionTypes'
 import assign from 'object-assign'
 var initialState = {supplierList:{}}
 export default function supplierReducer(state=initialState, action){
@@ -8,6 +8,10 @@ export default function supplierReducer(state=initialState, action){
         var newSupplierList =  assign({}, state.supplierList)
         newSupplierList = action.supplierList
         //state.supplierList = {}
+        return {supplierList: newSupplierList}
+      case ADD_SUPPLIER:
+        console.log("Add supplier...")
+        var newSupplierList = assign({}, state.supplierList, action.supplier)
         return {supplierList: newSupplierList}
       default:
         return state
