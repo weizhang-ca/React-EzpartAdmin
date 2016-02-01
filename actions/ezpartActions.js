@@ -27,3 +27,15 @@ export function addSupplier(supplier){
     supplier:supplier
   }
 }
+export function displayOrderList(orderList){
+  return{
+    type: types.DISPLAY_ORDERLIST,
+    orderList: orderList
+  }
+}
+export function displayOrderParts(orderParts){
+  return{
+    type: types.DISPLAY_ORDERPARTS,
+    orderParts: orderParts
+  }
+}

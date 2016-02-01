@@ -7,9 +7,9 @@ import * as EzpartActions from '../actions/ezpartActions';
 
 class App extends Component{
   render(){
-    console.log('App says 2: ');
-    console.log(this.props)
-    const {garageList, actions, supplierList} = this.props;
+    //console.log('App says 2: ');
+    //console.log(this.props)
+    const {garageList, actions, supplierList, orderList, orderParts} = this.props;
     var children = null
     if(this.props.children !== null){
       children = cloneElement(
@@ -17,7 +17,9 @@ class App extends Component{
         {
           garageList: garageList,
           actions: actions,
-          supplierList: supplierList
+          supplierList: supplierList,
+          orderList: orderList,
+          orderParts: orderParts
         }
       )
     }
@@ -37,13 +39,15 @@ App.propTypes = {
 }
 
 function mapStateToProps(state){
-      console.log('App says 1: ');
-      console.log(state)
-      console.log(state.garage.garageList);
-      console.log(state.supplier.supplierList)
+      //console.log('App says 1: ');
+      //console.log(state)
+      //console.log(state.garage.garageList);
+      //console.log(state.supplier.supplierList)
   return{
     garageList: state.garage.garageList,
-    supplierList: state.supplier.supplierList
+    supplierList: state.supplier.supplierList,
+    orderList: state.order.orderList,
+    orderParts: state.order.orderParts
   }
 }
 
