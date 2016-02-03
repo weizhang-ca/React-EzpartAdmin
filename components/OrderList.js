@@ -5,29 +5,27 @@ class OrderList extends Component{
 
   handleOrderClick(key){
     //console.log('find part list of order '+key)
-    var parts={
-      1:{partName:'Bumper', partNumber:'839182', partList:'100', partNet:'90', partType:'OEM', qty:1},
-      2:{partName:'Head light', partNumber:'124123', partList:'220', partNet:'190', partType:'OEM', qty:1},
-      3:{partName:'Clamp', partNumber:'123123', partList:'10', partNet:'8', partType:'Aftermarket', qty:4}
-    }
-    var orderParts={
-      1: parts
-    }
-    setTimeout(this.UpdateParts, 5000);
-    console.log('asdfasdfasdfasdf')
     //console.log(this.props.actions)
-    this.props.actions.displayOrderParts(orderParts)
+    this.props.actions.fetchOrderParts(key)
   }
+
   render(){
     console.log(this.props)
-    const {orderList, orderParts} = this.props
-    var orderArray = []
-    if(orderList!==null&&orderList!==undefined&&Object.keys(orderList).length>0){
-
+    const {orderList, orderParts, isFetchingOrders, orderId, isFetchingOrderParts} = this.props
+    var orderArray;
+    if(isFetchingOrders){
+      orderArray = <div>Fetching orders...</div>
+    }
+    else if(orderList!==null&&orderList!==undefined&&Object.keys(orderList).length>0){
+      orderArray = []
       for(var key in orderList){
-        var orderPartsArray = []
-        if(orderParts!==null&&orderParts!==undefined&&Object.keys(orderParts).length>0){
+        var orderPartsArray;
+        if(isFetchingOrderParts&&key==orderId){
+          orderPartsArray=<div>Fetching part...</div>
+        }
+        else if(orderParts!==null&&orderParts!==undefined&&Object.keys(orderParts).length>0){
             var orderKey = Object.keys(orderParts)[0]
+            orderPartsArray = []
             if(orderKey == key){
               for(var partKey in orderParts[orderKey]){
                 orderPartsArray.push(
@@ -42,6 +40,9 @@ class OrderList extends Component{
                   )
                 }
             }
+        }
+        else{
+          orderPartsArray = []
         }
         orderArray.push(
           <div>
@@ -63,10 +64,13 @@ class OrderList extends Component{
         )
       }
     }
+    else{
+      orderArray = <div></div>
+    }
     //console.log('Orderlist says: ')
     return(
       <div>
-        <OrderSearchForm displayOrderList={this.props.actions.displayOrderList}/>
+        <OrderSearchForm fetchOrders={this.props.actions.fetchOrders}/>
         {orderArray}
       </div>
     )

@@ -9,7 +9,7 @@ class App extends Component{
   render(){
     //console.log('App says 2: ');
     //console.log(this.props)
-    const {garageList, actions, supplierList, orderList, orderParts} = this.props;
+    const {garageList, actions, supplierList, orderList, orderParts, isFetchingOrders, isFetchingOrderParts,orderId} = this.props;
     var children = null
     if(this.props.children !== null){
       children = cloneElement(
@@ -19,7 +19,10 @@ class App extends Component{
           actions: actions,
           supplierList: supplierList,
           orderList: orderList,
-          orderParts: orderParts
+          orderParts: orderParts,
+          isFetchingOrderParts,
+          isFetchingOrders,
+          orderId
         }
       )
     }
@@ -47,7 +50,10 @@ function mapStateToProps(state){
     garageList: state.garage.garageList,
     supplierList: state.supplier.supplierList,
     orderList: state.order.orderList,
-    orderParts: state.order.orderParts
+    orderParts: state.order.orderParts,
+    isFetchingOrderParts: state.order.isFetchingOrderParts,
+    isFetchingOrders: state.order.isFetchingOrders,
+    orderId: state.order.orderId
   }
 }
 

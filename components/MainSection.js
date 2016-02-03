@@ -4,7 +4,7 @@ import GarageList from './GarageList';
 class MainSection extends Component{
 
   render(){
-    const{actions, garageList, supplierList, orderList, orderParts} = this.props;
+    const{actions, garageList, supplierList, orderList, orderParts, isFetchingOrders, isFetchingOrderParts, orderId} = this.props;
     //console.log('Main section says: ')
     //console.log(this.props)
     var children = this.props.children==null?
@@ -16,7 +16,10 @@ class MainSection extends Component{
         actions: actions,
         supplierList:supplierList,
         orderList: orderList,
-        orderParts: orderParts
+        orderParts: orderParts,
+        isFetchingOrderParts,
+        isFetchingOrders,
+        orderId
       }
       )
     //console.log(children)

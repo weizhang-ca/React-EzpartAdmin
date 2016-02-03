@@ -1,4 +1,5 @@
-import { createStore } from 'redux'
+import { createStore, applyMiddleware, compose  } from 'redux'
+import thunk from 'redux-thunk'
 import rootReducer from '../reducers/rootReducer'
 
 var initialState = {
@@ -8,7 +9,18 @@ var initialState = {
       }
 };
 export default function configStore(initialState){
-  const store = createStore(rootReducer, initialState);
+
+  /* This way does not work!! Do the following way to add middleware. It's from thunk official website
+  const store = createStore(
+    rootReducer,
+    initialState,
+    applyMiddleware(thunk)
+  )
+  */
+  let createStoreWithMiddleware = applyMiddleware(thunk)(createStore)
+  const store = createStoreWithMiddleware(rootReducer)
+  console.log('store is: ')
+  console.log(store)
   if (module.hot) {
       // Enable Webpack hot module replacement for reducers
       module.hot.accept('../reducers/rootReducer', () => {
