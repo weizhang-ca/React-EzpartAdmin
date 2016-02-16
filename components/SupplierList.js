@@ -31,7 +31,7 @@ class SupplierList extends Component{
   render(){
     var supplierArray = []
     var addNewSupplierButton = null
-    const {supplierList, garage} = this.props
+    const {supplierList, garage} = this.props.storeState.supplier
     if(this.props.params.garageId>0){
       addNewSupplierButton = <button><Link to={`/garages/${this.props.params.garageId}/addSupplier`}>Add New Supplier</Link></button>
     }

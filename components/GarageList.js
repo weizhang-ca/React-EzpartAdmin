@@ -12,7 +12,9 @@ class GarageList extends Component{
   }
   render(){
     console.log('render GarageList');
-    const{garageList, actions} = this.props;
+    console.log(this.props.storeState)
+    const{garageList} = this.props.storeState.garage;
+    const{actions} = this.props;
     console.log(actions)
     var garageItemList = [];
 
@@ -31,8 +33,8 @@ class GarageList extends Component{
   }
 }
 GarageList.propTypes = {
-  garageList: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  //garageList: PropTypes.object.isRequired,
+  //actions: PropTypes.object.isRequired
 }
 
 export default GarageList;

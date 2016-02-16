@@ -64,7 +64,7 @@ export function fetchOrderParts(orderId){
       2:{partName:'Head light ASYNC', partNumber:'124123', partList:'220', partNet:'190', partType:'OEM', qty:1},
       3:{partName:'Clamp ASYNC', partNumber:'123123', partList:'10', partNet:'8', partType:'Aftermarket', qty:4}
     }
-    setTimeout(()=>{return dispatch(receiveOrderParts(parts, orderId))},2000)
+    setTimeout(()=>{return dispatch(receiveOrderParts(parts, orderId))},1000)
   }
 }
 function requestOrders(){
@@ -87,6 +87,37 @@ export function fetchOrders(criteria){
       3:{garageId:2, supplierId:1, garageName:'Test Garage2', supplierName:'Test Supplier1', orderDate:'2016-01-30', po:"4134", totalValue:636.41, totalPart:2},
       4:{garageId:2, supplierId:2, garageName:'Test Garage2', supplierName:'Test Supplier2', orderDate:'2016-01-30', po:"31414", totalValue:3241.123, totalPart:15}
     }
-    setTimeout(()=>{return dispatch(receiveOrders(orderList))}, 2000)
+    setTimeout(()=>{return dispatch(receiveOrders(orderList))}, 1000)
+  }
+}
+export function clearOrderParts(orderId){
+  return {
+    type: types.CLEAR_ORDERPARTS,
+    orderId:orderId,
+    orderParts: {}
+  }
+}
+
+function requestSaveOrder(orderId){
+  console.log("dispatch requestSaveOrder")
+  return{
+    type: types.REQUEST_SAVE_ORDER,
+    orderId
+  }
+}
+function receiveSaveOrder(orderItem, orderId){
+  return{
+    type: types.RECEIVE_SAVE_ORDER,
+    orderItem,
+    orderId
+  }
+}
+export function saveOrder(orderItem, orderId){
+  return (dispatch)=>{
+    dispatch(requestSaveOrder(orderId))
+    var orderItem={
+      1:{garageId:1, supplierId:1, garageName:'Test Garage', supplierName:'Test Supplier', orderDate:'2016-01-22', po:"123123", totalValue:123.31, totalPart:8},
+    }
+    setTimeout(()=>{return dispatch(receiveSaveOrder(orderItem, orderId))}, 2000)
   }
 }

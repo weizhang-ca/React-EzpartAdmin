@@ -45,6 +45,9 @@ li.editing .edit {
 li.editing .view {
 	display: none;
 }
+div.editing .view {
+	display: none;
+}
 .view{
   float: left;
   width:150px;

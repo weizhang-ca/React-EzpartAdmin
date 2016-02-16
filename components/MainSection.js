@@ -4,7 +4,8 @@ import GarageList from './GarageList';
 class MainSection extends Component{
 
   render(){
-    const{actions, garageList, supplierList, orderList, orderParts, isFetchingOrders, isFetchingOrderParts, orderId} = this.props;
+    //const{actions, garageList, supplierList, orderList, orderParts, isFetchingOrders, isFetchingOrderParts, orderId} = this.props;
+    const{storeState, actions} = this.props;
     //console.log('Main section says: ')
     //console.log(this.props)
     var children = this.props.children==null?
@@ -12,6 +13,9 @@ class MainSection extends Component{
     cloneElement(
       this.props.children,
       {
+        storeState,
+        actions: actions
+        /*
         garageList:garageList,
         actions: actions,
         supplierList:supplierList,
@@ -20,6 +24,7 @@ class MainSection extends Component{
         isFetchingOrderParts,
         isFetchingOrders,
         orderId
+        */
       }
       )
     //console.log(children)
@@ -31,11 +36,13 @@ class MainSection extends Component{
   }
 }
 MainSection.propTypes = {
+  /*
   actions: PropTypes.object.isRequired,
   garageList: PropTypes.object.isRequired,
   supplierList: PropTypes.object.isRequired,
   orderList: PropTypes.object.isRequired,
   orderParts: PropTypes.object.isRequired
+  */
 }
 
 export default MainSection;

@@ -1,6 +1,6 @@
 import {
   DISPLAY_ORDERLIST, DISPLAY_ORDERPARTS, REQUEST_ORDERPARTS, RECEIVE_ORDERPARTS,
-  RECEIVE_ORDERS, REQUEST_ORDERS
+  RECEIVE_ORDERS, REQUEST_ORDERS, CLEAR_ORDERPARTS, REQUEST_SAVE_ORDER, RECEIVE_SAVE_ORDER
 } from '../constants/ActionTypes'
 
 var initialState = {orderList:{}, orderParts:{}, isFetching:false}
@@ -22,19 +22,34 @@ export default function orderReducer(state=initialState, action){
       return {orderParts: newOrderParts, orderList:state.orderList}
     case REQUEST_ORDERPARTS:
       console.log('request orderparts...')
-      return{orderParts:{}, isFetchingOrderParts: true, orderId:action.orderId, orderList:state.orderList}
+      return{orderParts:{}, isFetchingOrderParts: true, partFetchingOrderId:action.orderId, orderList:state.orderList}
     case RECEIVE_ORDERPARTS:
       console.log('receive orderparts...')
       console.log(action)
       let orderParts={}
       orderParts[action.orderId] = action.orderParts
-      return{orderParts:orderParts, isFetchingOrderParts:false, orderId:action.orderId, orderList:state.orderList}
+      return{orderParts:orderParts, isFetchingOrderParts:false, partFetchingOrderId:action.orderId, orderList:state.orderList}
     case REQUEST_ORDERS:
       console.log('request orders...')
       return{orders:{}, isFetchingOrders: true}
     case RECEIVE_ORDERS:
       console.log('receive orders...')
       return{orderList:action.orderList, isFetchingOrders:false}
+    case CLEAR_ORDERPARTS:
+      console.log('clear order parts...')
+      orderParts={}
+      orderParts[action.orderId] = action.orderParts
+      //return{orderParts:orderParts, isFetchingOrderParts:false, partFetchingOrderId:0, orderList:state.orderList}
+      return Object.assign({},  state, {partFetchingOrderId:0, orderParts:orderParts})
+    case REQUEST_SAVE_ORDER:
+      console.log('request save order')
+      console.log('order id is: '+action.orderId)
+      return Object.assign({}, state, {isUpdatingOrder: true, updatingOrderId:action.orderId})
+    case RECEIVE_SAVE_ORDER:
+      console.log('receive save order')
+      var newOrderList = Object.assign({}, state.orderList, action.orderItem)
+      console.log(newOrderList)
+      return Object.assign({}, state, {orderList: newOrderList, isUpdatingOrder: false, isEditingOrder:false, updatingOrderId:action.orderId})
     default:
       return state
   }
