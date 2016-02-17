@@ -121,3 +121,26 @@ export function saveOrder(orderItem, orderId){
     setTimeout(()=>{return dispatch(receiveSaveOrder(orderItem, orderId))}, 2000)
   }
 }
+
+function requestSavePart(partId){
+  return{
+    type: types.REQUEST_SAVE_PART,
+    partId
+  }
+}
+function receiveSavePart(partItem, partId){
+  return{
+    type: types.RECEIVE_SAVE_PART,
+    partItem,
+    partId
+  }
+}
+export function savePart(partItem, partId){
+  return (dispatch)=>{
+    dispatch(requestSavePart(partId))
+    var newPartItem={
+      1:{partName:'Bumper ASYNC', partNumber:'839182XXX', partList:'100', partNet:'90', partType:'OEM', qty:1}
+    }
+    setTimeout(()=>{return dispatch(receiveSavePart(newPartItem, partId))}, 1000)
+  }
+}

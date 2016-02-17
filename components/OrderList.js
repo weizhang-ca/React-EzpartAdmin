@@ -25,6 +25,8 @@ class OrderList extends Component{
             isUpdatingOrder={isUpdatingOrder}
             isEditingOrder={isEditingOrder}
             updatingOrderId={updatingOrderId}
+            storeState={this.props.storeState}
+            actions={actions}
             />
         )
       }

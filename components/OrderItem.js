@@ -40,15 +40,18 @@ class OrderItem extends Component{
       this.setState({editable:false})
     }
     render(){
-        const{ orderItem, isFetchingOrderParts, orderParts, partFetchingOrderId, orderId, isUpdatingOrder, updatingOrderId} = this.props;
+        const{ orderItem, isFetchingOrderParts, orderParts, partFetchingOrderId, orderId, isUpdatingOrder, updatingOrderId, savePart, storeState, actions} = this.props;
         //console.log(this.props)
-        let partList;
+        let partList=null;
         if(isFetchingOrderParts&&orderId==partFetchingOrderId){
           partList=<div>Fetching part...</div>
         }
         else if(orderParts!==null&&orderParts!==undefined){
             partList = <PartList
+                        savePart={savePart}
                         partList={orderParts[orderId]}
+                        storeState={storeState}
+                        actions={actions}
                         />
 
         }
@@ -89,7 +92,7 @@ class OrderItem extends Component{
             </tr>
             <tr><td colSpan='7'>
               {
-                partList
+                  partList
               }
             </td></tr>
             </tbody>
