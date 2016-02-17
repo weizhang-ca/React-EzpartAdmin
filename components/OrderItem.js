@@ -43,6 +43,10 @@ class OrderItem extends Component{
         const{ orderItem, isFetchingOrderParts, orderParts, partFetchingOrderId, orderId, isUpdatingOrder, updatingOrderId, savePart, storeState, actions} = this.props;
         //console.log(this.props)
         let partList=null;
+        let parts=null
+        if(orderId==partFetchingOrderId){
+          parts = orderParts
+        }
         if(isFetchingOrderParts&&orderId==partFetchingOrderId){
           partList=<div>Fetching part...</div>
         }
