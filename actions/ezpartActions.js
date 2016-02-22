@@ -1,5 +1,24 @@
 import * as types from '../constants/ActionTypes';
 import thunk from 'redux-thunk'
+require('es6-promise').polyfill()
+require('isomorphic-fetch')
+var postHeader = {
+  'Accept':'application/json',
+  'Content-Type':'application/json'
+}
+
+function checkHttpReponseStatus(response){
+  if (response.status >= 200 && response.status < 300) {
+    return response
+  } else {
+    var error = new Error(response.statusText)
+    error.response = response
+    throw error
+  }
+}
+function parseJSON(response) {
+  return response.json()
+}
 
 export function saveGarage(garageId, garage){
   return {type: types.SAVE_GARAGE, garageId:garageId, garage:garage}
@@ -10,12 +29,199 @@ export function removeGarage(key){
 export function addGarage(garage){
   return {type: types.ADD_GARAGE, garage:garage}
 }
-export function displayGarageList(garageList){
+function requestGarageList(){
   return {
-      type: types.GET_GARAGE_LIST,
-      garageList: garageList
+    type: types.REQUEST_GARAGE_LIST
   }
 }
+function receiveGarageList(garageList){
+  console.log(garageList)
+  return{
+    type: types.RECEIVE_GARAGE_LIST,
+    garageList
+  }
+}
+function FailedFetchGarageList(error){
+  console.log(error)
+  return{
+    type: types.FETCH_GARAGELIST_FAILED,
+    error
+  }
+}
+export function fetchGarageList(criteria=null){
+    return (dispatch)=>{
+      dispatch(requestGarageList())
+      fetch('http://localhost/json/')
+        .then(checkHttpReponseStatus)
+        .then(parseJSON)
+        .then((json)=>dispatch(receiveGarageList(json)))
+        .catch((error)=>{
+          dispatch(FailedFetchGarageList(error))
+        })
+    }
+  }
+function requestUpdateGarage(garageId){
+  return {
+    type: types.REQUEST_UPDATE_GARAGE,
+    garageId
+  }
+}
+function receiveUpdateGarage(result){
+  console.log('garageId is: '+result.garageId)
+  return {
+    type: types.RECEIVE_UPDATE_GARAGE,
+    garageId: result.garageId
+  }
+}
+function failedUpdateGarage(error){
+  console.log(error)
+  return{
+    type: types.FAILED_UPDATE_GARAGE,
+    error
+  }
+}
+export function fetchUpdateGarage(garage){
+  return (dispatch)=>{
+    dispatch(requestUpdateGarage(garage.garageId))
+    fetch('http://localhost/json/updateGarage/',{
+      method:'post',
+      header:postHeader,
+      body:JSON.stringify(garage)
+    }).then(checkHttpReponseStatus)
+      .then(parseJSON)
+      .then((json)=>dispatch(receiveUpdateGarage(json)))
+      //.catch((error)=>{dispatch(failedUpdateGarage(error))})
+  }
+}
+function requestSupplierList(){
+  return {
+    type: types.REQUEST_SUPPLIER_LIST
+  }
+}
+function receiveSupplierList(supplierList){
+  console.log(supplierList)
+  return{
+    type: types.RECEIVE_SUPPLIER_LIST,
+    supplierList
+  }
+}
+function FailedFetchSupplierList(error){
+  console.log(error)
+  return{
+    type: types.FAILED_FETCH_SUPPLIER_LIST,
+    error
+  }
+}
+export function fetchSupplierList(criteria=null){
+    return (dispatch)=>{
+      dispatch(requestSupplierList())
+      fetch('http://localhost/json/suppliers/')
+        .then(checkHttpReponseStatus)
+        .then(parseJSON)
+        .then((json)=>dispatch(receiveSupplierList(json)))
+        .catch((error)=>{
+          dispatch(FailedFetchSupplierList(error))
+        })
+    }
+  }
+function requestUpdateSupplier(garageId){
+  return {
+    type: types.REQUEST_UPDATE_SUPPLIER,
+    garageId
+  }
+}
+function receiveUpdateSupplier(garageId){
+  return {
+    type: types.RECEIVE_UPDATE_SUPPLIER,
+    garageId
+  }
+}
+function failedUpdateSupplier(error){
+  return{
+    type: types.FAILED_UPDATE_SUPPLIER,
+    error
+  }
+}
+export function fetchUpdateSupplier(supplier){
+  return (dispatch)=>{
+    dispatch(requestUpdateGarage(supplier.supplierId))
+    fetch('http://localhost/json/updateGarage/',{
+      method:'post',
+      header:postHeader,
+      body:JSON.stringify(supplier)
+    }).then(checkHttpReponseStatus)
+      .then(parseJSON)
+      .then((json)=>dispatch(receiveUpdateGarage(json)))
+      .catch((error)=>{dispatch(failedUpdateGarage(error))})
+  }
+}
+function requestAddSupplier(){
+  return {
+    type: types.REQUEST_ADD_SUPPLIER
+  }
+}
+function receiveAddSupplier(supplier){
+  return {
+    type: types.RECEIVE_ADD_SUPPLIER,
+    supplier
+  }
+}
+function failedAddSupplier(error){
+  return {
+    type: types.FAILED_ADD_SUPPLIER,
+    error
+  }
+}
+export function fetchAddSupplier(supplier){
+  return (dispatch)=>{
+    dispatch(requestAddSupplier())
+    fetch('http://localhost/json/addSupplier/',{
+      method:'post',
+      header:postHeader,
+      body:JSON.stringify(supplier)
+    }).then(checkHttpReponseStatus)
+      .then(parseJSON)
+      .then((json)=>dispatch(receiveAddSupplier(supplier)))
+      .catch((error)=>{dispatch(failedAddSupplier(error))})
+  }
+}
+function requestOrderList(){
+  return {
+    type: types.REQUEST_ORDER_LIST
+  }
+}
+function receiveOrderList(orderList){
+  console.log(orderList)
+  return{
+    type: types.RECEIVE_ORDER_LIST,
+    orderList
+  }
+}
+function FailedFetchOrderList(error){
+  console.log(error)
+  return{
+    type: types.FAILED_FETCH_ORDER_LIST,
+    error
+  }
+}
+var defaultFetchOrderCriteria={
+  garageId:'', supplierId:'', dateFrom:'', dateTo:'', insurer:''
+}
+export function fetchOrderList(criteria=defaultFetchOrderCriteria){
+    var filter = 'garageId='+criteria.garageId+'&supplierId='+criteria.supplierId
+                  +'&dateFrom='+criteria.dateFrom+'&dateTo='+criteria.dateTo
+                  +'&insurer='+criteria.insurer
+
+    return (dispatch)=>{
+      dispatch(requestOrderList())
+      fetch('http://localhost/json/orders/?filter='+filter)
+        .then(checkHttpReponseStatus)
+        .then(parseJSON)
+        .then((json)=>dispatch(receiveOrderList(json)))
+        //.catch((error)=>{dispatch(FailedFetchOrderList(error))})
+    }
+}
+
 export function dispalySupplierList(supplierList){
   return {
       type: types.DISPLAY_SUPPLIERLIST,

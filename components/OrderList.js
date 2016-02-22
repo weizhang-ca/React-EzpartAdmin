@@ -5,23 +5,22 @@ class OrderList extends Component{
 
   render(){
     console.log(this.props)
-    const {orderList, orderParts, isFetchingOrders, partFetchingOrderId, isFetchingOrderParts, isUpdatingOrder, isEditingOrder, updatingOrderId} = this.props.storeState.order
+    const {orderList, orderParts, isFetchingOrderList, partFetchingOrderId, isFetchingOrderParts, isUpdatingOrder, isEditingOrder, updatingOrderId} = this.props.storeState.order
     const{actions} = this.props
     var orderArray;
-    if(isFetchingOrders){
+    if(isFetchingOrderList===true){
       orderArray = <div>Fetching orders...</div>
     }
-    else if(orderList!==null&&orderList!==undefined&&Object.keys(orderList).length>0){
+    else if(orderList!==null&&orderList!==undefined){
       orderArray = []
       for(var key in orderList){
         orderArray.push(
           <OrderItem
-            orderId={key}
+            orderId={orderList[key].orderId}
             partFetchingOrderId={partFetchingOrderId}
             orderItem={orderList[key]}
             orderParts={orderParts}
             {...actions}
-            isFetchingOrderParts={isFetchingOrderParts}
             isUpdatingOrder={isUpdatingOrder}
             isEditingOrder={isEditingOrder}
             updatingOrderId={updatingOrderId}
@@ -32,13 +31,25 @@ class OrderList extends Component{
       }
     }
     else{
-      orderArray = <div></div>
+      orderArray = <tr></tr>
     }
     //console.log('Orderlist says: ')
     return(
       <div>
-        <OrderSearchForm fetchOrders={this.props.actions.fetchOrders}/>
-        {orderArray}
+        <OrderSearchForm fetchOrderList={this.props.actions.fetchOrderList}/>
+          <table>
+            <tr>
+              <th>Garage</th>
+              <th>Supplier</th>
+              <th>Date</th>
+              <th>PO</th>
+              <th>Value #</th>
+              <th>Part #</th>
+              <th>Note</th>
+              <th>Claim</th>
+            </tr>
+              {orderArray}
+        </table>
       </div>
     )
   }

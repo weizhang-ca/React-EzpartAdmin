@@ -1,12 +1,38 @@
 import { createStore, applyMiddleware, compose  } from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from '../reducers/rootReducer'
-
-var initialState = {
-      garageList:{
-        "1":{garageName:'Test1', address:'123th Avenue', city:'MTL', phone:'5145555555',email:'test1@test.com'},
-        "2":{garageName:'Test2', address:'222th Avenue', city:'MTL', phone:'5145555555',email:'test2@test.com'}
+/*
+State shape
+{
+  garage:{
+    isFetchingGarage: false,
+    garageList:[{id:1, name:'Garage1', address:'',city:'',
+                region:'', country:'', email:'', phone:'',
+                masterId:'', master:''}]
+            },
+  supplier:{
+    isFetchingSupplier: false,
+    supplierList:[{id:1, name:'', address:'', city:'', region:'',
+                    country:'', zip:'', email:'', phone:'', masterId:'',
+                    master:''}]
+              }
+  order:{
+      isFetchingOrder: false,
+      orderList:[{id:1, poNumber:'', status:''}]
+        }
+  part:{
+      isFetchingPart: false,
+      partList:[{id:1, partDescription:'', partNumber:'', partListprice:,
+                partNetprice:, status:'', dateOrder:'', dateView:'', dateBo:''
+                dateShip:'', dateReceive:'', invoiceNumber:''}]
       }
+  master:{
+      masterList:[{id:3, name:'Advantage'}]
+  }
+}
+*/
+var initialState = {
+
 };
 export default function configStore(initialState){
 

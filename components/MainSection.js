@@ -29,7 +29,7 @@ class MainSection extends Component{
       )
     //console.log(children)
     return(
-        <div>
+        <div className='mainSection'>
           {children}
         </div>
     );

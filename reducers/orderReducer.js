@@ -1,6 +1,6 @@
 import {
   DISPLAY_ORDERLIST, DISPLAY_ORDERPARTS, REQUEST_ORDERPARTS, RECEIVE_ORDERPARTS,
-  RECEIVE_ORDERS, REQUEST_ORDERS, CLEAR_ORDERPARTS, REQUEST_SAVE_ORDER, RECEIVE_SAVE_ORDER
+  RECEIVE_ORDER_LIST, REQUEST_ORDER_LIST, CLEAR_ORDERPARTS, REQUEST_SAVE_ORDER, RECEIVE_SAVE_ORDER
 } from '../constants/ActionTypes'
 
 var initialState = {orderList:{}, orderParts:{}, isFetching:false}
@@ -29,12 +29,12 @@ export default function orderReducer(state=initialState, action){
       let orderParts={}
       orderParts[action.orderId] = action.orderParts
       return{orderParts:orderParts, isFetchingOrderParts:false, partFetchingOrderId:action.orderId, orderList:state.orderList}
-    case REQUEST_ORDERS:
+    case REQUEST_ORDER_LIST:
       console.log('request orders...')
-      return{orders:{}, isFetchingOrders: true}
-    case RECEIVE_ORDERS:
+      return Object.assign({}, state, {isFethingOrderList:true})
+    case RECEIVE_ORDER_LIST:
       console.log('receive orders...')
-      return{orderList:action.orderList, isFetchingOrders:false}
+      return Object.assign({}, state, {isFetchingOrderList:false, orderList:action.orderList})
     case CLEAR_ORDERPARTS:
       console.log('clear order parts...')
       orderParts={}

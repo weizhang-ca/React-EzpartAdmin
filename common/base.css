@@ -1,23 +1,48 @@
-html,
-body {
+* {
 	margin: 0;
 	padding: 0;
 }
+body {
+	font: 16px Georgia, Serif;
+}
+#page-wrap {
+	margin: 50px;
+}
+p {
+	margin: 20px 0;
+}
 
+	/*
+	Generic Styling, for Desktops/Laptops
+	*/
+	table {
+		margin-top: 20px;
+		font-size:13px;
+		width: 100%;
+		border-collapse: collapse;
+		table-layout: fixed
+	}
+	/* Zebra striping */
+	tr:nth-of-type(odd) {
+		background: #eee;
+	}
+	th {
+		background: #DBDBDB;
+		font-weight:normal;
+	}
+	td, th {
+		padding: 3px;
+		border: 1px solid #ccc;
+		text-align: left;
+		width: 130px;
+		max-width: 130px;
+	}
+html,
+
+.mainSection{
+}
 button {
 
-}
-
-body {
-	font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	line-height: 1.4em;
-	background: #eaeaea url('bg.png');
-	color: #4d4d4d;
-}
-
-button,
-input[type="checkbox"] {
-  outline: none;
 }
 
 li {
@@ -41,7 +66,9 @@ li.editing .edit {
 	padding: 13px 17px 12px 17px;
 	margin: 0 0 0 43px;
 }
-
+tr.editing .view {
+	display: none;
+}
 li.editing .view {
 	display: none;
 }
@@ -49,10 +76,30 @@ div.editing .view {
 	display: none;
 }
 .view{
-  float: left;
-  width:150px;
+
+}
+.Table
+{
+	display: table;   	width: 100%;
+	//overflow: hidden;
 }
 
+.Heading
+{
+  	display: table-header-group;   	background-color: #ddd;
+}
+.Row
+{
+	display: table-row;
+	//overflow: hidden;
+}
+.Cell
+{
+  	display: table-cell;   	padding: 1px 3px;   	border: 1px solid #999999;
+		//width:30px; max-width: 30px;
+		//overflow: hidden;
+		       /* for IE as it does not support min-height */
+}
 @media (min-width: 899px) {
 	.learn-bar {
 		width: auto;

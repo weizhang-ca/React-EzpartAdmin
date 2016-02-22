@@ -4,51 +4,53 @@ import {Link} from 'react-router'
 class SupplierList extends Component{
 
   componentDidMount(){
-    if(this.props.params.garageId == 1)
-    {
-      var supplierList = {
-        "1":{supplierName:'Test Supplier 1', address:'123th Avenue', city:'MTL', phone:'5145555555',email:'testSupplier1@test.com'},
-        "2":{supplierName:'TestSupplier 2', address:'222th Avenue', city:'MTL', phone:'5145555555',email:'testSupplier2@test.com'}
-      }
-    }
-    else if(this.props.params.garageId == 2){
-      var supplierList = {
-        "3":{supplierName:'Test Supplier 3', address:'123th Avenue', city:'MTL', phone:'5145555555',email:'testSupplier3@test.com'},
-        "4":{supplierName:'TestSupplier 4', address:'222th Avenue', city:'MTL', phone:'5145555555',email:'testSupplier4@test.com'}
-      }
-    }
-    else{
-      var supplierList = {
-        "1":{supplierName:'Test Supplier 1', address:'123th Avenue', city:'MTL', phone:'5145555555',email:'testSupplier1@test.com'},
-        "2":{supplierName:'TestSupplier 2', address:'222th Avenue', city:'MTL', phone:'5145555555',email:'testSupplier2@test.com'},
-        "3":{supplierName:'Test Supplier 3', address:'123th Avenue', city:'MTL', phone:'5145555555',email:'testSupplier3@test.com'},
-        "4":{supplierName:'TestSupplier 4', address:'222th Avenue', city:'MTL', phone:'5145555555',email:'testSupplier4@test.com'}
-      }
-    }
-    this.props.actions.dispalySupplierList(supplierList)
+    this.props.actions.fetchSupplierList()
   }
 
   render(){
     var supplierArray = []
     var addNewSupplierButton = null
-    const {supplierList, garage} = this.props.storeState.supplier
-    if(this.props.params.garageId>0){
-      addNewSupplierButton = <button><Link to={`/garages/${this.props.params.garageId}/addSupplier`}>Add New Supplier</Link></button>
+    const {supplierList, garage, isUpdatingSupplier, isFetchingSupplierList,
+            isFailedFetchSupplierList} = this.props.storeState.supplier
+    const{actions} = this.props
+    //if(this.props.params.garageId>0){
+    //  addNewSupplierButton = <button><Link to={`/garages/${this.props.params.garageId}/addSupplier`}>Add New Supplier</Link></button>
+    //}
+    if(isFetchingSupplierList){
+      return <div>Fetching Suppliers....</div>
     }
+    else{
+      if(isFailedFetchSupplierList===true){
+        return(<div>Faield to get supplier list. Please try a again later</div>)
+      }
+
     for(var key in supplierList){
       supplierArray.push(
         <SupplierItem
           supplierId={key}
           supplier={supplierList[key]}
+          isUpdatingSupplier={isUpdatingSupplier}
+          {...actions}
           />
       )
     }
     return(
-      <div>
-        <ul>{supplierArray}</ul>
-        <div>{addNewSupplierButton}</div>
-      </div>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>City</th>
+          <th>Region</th>
+          <th>Country</th>
+          <th>Master</th>
+          <th></th>
+        </tr>
+        {supplierArray}
+      </table>
     )
+    }
   }
 }
 export default SupplierList

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import classNames from 'classnames'
 import assign from 'object-assign'
 import PartList from './PartList'
+import SkyLight from 'react-skylight'
 
 class OrderItem extends Component{
     constructor(props, context){
@@ -40,14 +41,14 @@ class OrderItem extends Component{
       this.setState({editable:false})
     }
     render(){
-        const{ orderItem, isFetchingOrderParts, orderParts, partFetchingOrderId, orderId, isUpdatingOrder, updatingOrderId, savePart, storeState, actions} = this.props;
-        //console.log(this.props)
+        const{ orderItem, isFetchingOrderList, orderParts, partFetchingOrderId, orderId, isUpdatingOrder, updatingOrderId, savePart, storeState, actions} = this.props;
+        console.log(orderItem)
         let partList=null;
         let parts=null
         if(orderId==partFetchingOrderId){
           parts = orderParts
         }
-        if(isFetchingOrderParts&&orderId==partFetchingOrderId){
+        if(isFetchingOrderList&&orderId==partFetchingOrderId){
           partList=<div>Fetching part...</div>
         }
         else if(orderParts!==null&&orderParts!==undefined){
@@ -79,30 +80,22 @@ class OrderItem extends Component{
           saveButton = <button name="save" onClick={this.handleSaveClick.bind(this,orderId)} disabled={disabled}>{buttonValue}</button>;
         }
         return (
-          <div className={classNames({
-            'editing': this.state.editable
-          })}
-          >
-            <table>
-            <tbody>
             <tr>
-              <td>{orderItem.garageName}</td>
+              <td onClick={() => this.refs.simpleDialog.show()}>{orderItem.garageName}</td>
               <td>{orderItem.supplierName}</td>
-              <td><div className="view">{orderItem.orderDate}</div>{inputOrderDate}</td>
+              <td>{orderItem.orderDate}</td>
+              <td>{orderItem.poNumber}</td>
               <td>{orderItem.totalValue}</td>
               <td>{orderItem.totalPart}</td>
-              <td><div className="view"><button onClick={this.handleEditClick.bind(this)} disabled={disabled}>{editButtonValue}</button></div>{saveButton}</td>
-              <td><button name="viewParts" onClick={this.handleOrderClick.bind(this, orderId)} disabled={disabled}>View Parts</button></td>
+              <td>{orderItem.orderNote}</td>
+              <td><div>
+                {orderItem.claim}
+                <SkyLight hideOnOverlayClicked ref="simpleDialog" title="Hi, I'm a simple modal">
+                          Hello, I dont have any callback.
+                </SkyLight>
+              </div></td>
             </tr>
-            <tr><td colSpan='7'>
-              {
-                  partList
-              }
-            </td></tr>
-            </tbody>
-            </table>
-          </div>
-        );
+        )
     }
 }
 export default OrderItem
