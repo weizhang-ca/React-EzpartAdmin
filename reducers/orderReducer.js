@@ -31,7 +31,7 @@ export default function orderReducer(state=initialState, action){
       return{orderParts:orderParts, isFetchingOrderParts:false, partFetchingOrderId:action.orderId, orderList:state.orderList}
     case REQUEST_ORDER_LIST:
       console.log('request orders...')
-      return Object.assign({}, state, {isFethingOrderList:true})
+      return Object.assign({}, state, {isFetchingOrderList:true})
     case RECEIVE_ORDER_LIST:
       console.log('receive orders...')
       return Object.assign({}, state, {isFetchingOrderList:false, orderList:action.orderList})

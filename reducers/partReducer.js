@@ -1,15 +1,19 @@
-import{REQUEST_SAVE_PART, RECEIVE_SAVE_PART} from '../constants/ActionTypes'
+import{REQUEST_SAVE_PART, RECEIVE_SAVE_PART, REQUEST_PART_LIST, RECEIVE_PART_LIST,
+        FAILED_FETCH_PART_LIST} from '../constants/ActionTypes'
 var initialState={}
 export default function partReducer(state=initialState, action){
   switch(action.type){
     case REQUEST_SAVE_PART:
-      console.log(state)
       return Object.assign({}, state, {partId:action.partId, updatingPartId:action.partId, isUpdatingPart:true})
     case RECEIVE_SAVE_PART:
       let newPartList = Object.assign({}, state.orderParts, action.partItem)
-      console.log(newPartList)
-      console.log(state)
       return Object.assign({}, state, {orderParts:newPartList, updatingPartId:action.partId, isUpdatingPart:false})
+    case REQUEST_PART_LIST:
+      return Object.assign({}, state, {isFetchingPartList:true})
+    case RECEIVE_PART_LIST:
+      return Object.assign({}, state, {isFetchingPartList:false, partList:action.partList})
+    case FAILED_FETCH_PART_LIST:
+      return Object.assign({}, state, {isFailedFetchPartList:false, error:action.error})
     default:
       return state
   }

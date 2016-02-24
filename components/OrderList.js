@@ -1,15 +1,26 @@
 import React, {Component, PropTypes} from 'react'
 import OrderSearchForm from './OrderSearchForm'
 import OrderItem from './OrderItem'
+import Spinner from 'react-spinkit'
 class OrderList extends Component{
 
   render(){
     console.log(this.props)
     const {orderList, orderParts, isFetchingOrderList, partFetchingOrderId, isFetchingOrderParts, isUpdatingOrder, isEditingOrder, updatingOrderId} = this.props.storeState.order
     const{actions} = this.props
-    var orderArray;
+    const{storeState} = this.props
+    var orderArray
+    console.log('orderArray')
+    console.log(isFetchingOrderList)
     if(isFetchingOrderList===true){
-      orderArray = <div>Fetching orders...</div>
+      var divStyle={
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        width: '100px',
+        height: '100px',
+      }
+        orderArray=<div style={divStyle}><Spinner spinnerName='circle'/></div>
     }
     else if(orderList!==null&&orderList!==undefined){
       orderArray = []
@@ -17,9 +28,7 @@ class OrderList extends Component{
         orderArray.push(
           <OrderItem
             orderId={orderList[key].orderId}
-            partFetchingOrderId={partFetchingOrderId}
             orderItem={orderList[key]}
-            orderParts={orderParts}
             {...actions}
             isUpdatingOrder={isUpdatingOrder}
             isEditingOrder={isEditingOrder}
@@ -33,7 +42,7 @@ class OrderList extends Component{
     else{
       orderArray = <tr></tr>
     }
-    //console.log('Orderlist says: ')
+
     return(
       <div>
         <OrderSearchForm fetchOrderList={this.props.actions.fetchOrderList}/>

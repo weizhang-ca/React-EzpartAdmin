@@ -66,11 +66,9 @@ class PartItem extends Component{
       }
 
       return(
-        <div className={classNames({
-          'editing': this.state.editable
-        })}>
-          <table>
-            <tr>
+          <tr className={classNames({
+            'editing': this.state.editable
+          })}>
               <td><div className="view">{partItem.partName}</div>{inputPartName}</td>
               <td><div className="view">{partItem.partNumber}</div>{inputPartNumber}</td>
               <td><div className="view">{partItem.partList}</div>{inputPartList}</td>
@@ -78,8 +76,6 @@ class PartItem extends Component{
               <td><div className="view">{partItem.partType}</div>{inputPartType}</td>
               <td><div className="view"><button onClick={this.handleEditClick.bind(this)} disabled={disabled}>{editButtonValue}</button></div>{saveButton}</td>
             </tr>
-          </table>
-        </div>
       )
     }
 }

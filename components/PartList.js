@@ -4,14 +4,14 @@ class PartList extends Component{
 
   render(){
     const {partList, orderId, storeState} = this.props
-    console.log('xsdfsdfasdf')
+    console.log('aaaaaa')
     console.log(partList)
     const {actions} = this.props
     let partArray = []
     for(var key in partList){
       partArray.push(
         <PartItem
-          partId={key}
+          partId={partList[key].partId}
           {...actions}
           storeState={storeState}
           partItem={partList[key]}
@@ -19,7 +19,17 @@ class PartList extends Component{
       )
     }
     return (
-      <div>{partArray}</div>
+      <table>
+        <tr>
+          <th>Description</th>
+          <th>Number</th>
+          <th>List</th>
+          <th>Net</th>
+          <th>Type</th>
+          <th></th>
+        </tr>
+        {partArray}
+      </table>
     )
   }
 }

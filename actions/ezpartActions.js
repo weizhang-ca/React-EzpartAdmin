@@ -247,30 +247,32 @@ export function displayOrderParts(orderParts){
   }
 }
 
-function requestOrderParts(orderId){
+function requestPartList(orderId){
   return{
-    type: types.REQUEST_ORDERPARTS,
-    orderId,
-    isFetching:true
-  }
-}
-function receiveOrderParts(orderParts, orderId){
-  return{
-    type: types.RECEIVE_ORDERPARTS,
-    orderParts,
+    type: types.REQUEST_PART_LIST,
     orderId
   }
 }
-export function fetchOrderParts(orderId){
-
+function receivePartList(partList){
+  return{
+    type: types.RECEIVE_PART_LIST,
+    partList
+  }
+}
+function failedFetchPartList(error){
+  return{
+    type: types.FAILED_FETCH_PART_LIST,
+    error
+  }
+}
+export function fetchPartList(orderId){
   return function(dispatch){
-    dispatch(requestOrderParts(orderId))
-    var parts={
-      1:{partName:'Bumper ASYNC', partNumber:'839182', partList:'100', partNet:'90', partType:'OEM', qty:1},
-      2:{partName:'Head light ASYNC', partNumber:'124123', partList:'220', partNet:'190', partType:'OEM', qty:1},
-      3:{partName:'Clamp ASYNC', partNumber:'123123', partList:'10', partNet:'8', partType:'Aftermarket', qty:4}
-    }
-    setTimeout(()=>{return dispatch(receiveOrderParts(parts, orderId))},1000)
+    dispatch(requestPartList(orderId))
+    fetch('http://localhost/json/parts/')
+        .then(checkHttpReponseStatus)
+        .then(parseJSON)
+        .then((json)=>dispatch(receivePartList(json)))
+        .catch((error)=>failedFetchPartList(error))
   }
 }
 function requestOrders(){

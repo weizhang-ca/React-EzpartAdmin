@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import assign from 'object-assign'
 import PartList from './PartList'
 import SkyLight from 'react-skylight'
-
+import Spinner from 'react-spinkit'
 class OrderItem extends Component{
     constructor(props, context){
       super(props, context)
@@ -13,15 +13,9 @@ class OrderItem extends Component{
       }
     }
 
-    handleOrderClick(key){
-      //console.log('find part list of order '+key)
-      //console.log(this.props.actions)
-      if(this.props.partFetchingOrderId==key){
-        this.props.clearOrderParts(key)
-      }
-      else{
-        this.props.fetchOrderParts(key)
-      }
+    handleOrderClick(orderId){
+      this.props.fetchPartList(orderId)
+      this.refs.orderPartScreen.show()
     }
     handleEditClick(key){
       this.setState({editable:true})
@@ -41,25 +35,49 @@ class OrderItem extends Component{
       this.setState({editable:false})
     }
     render(){
-        const{ orderItem, isFetchingOrderList, orderParts, partFetchingOrderId, orderId, isUpdatingOrder, updatingOrderId, savePart, storeState, actions} = this.props;
-        console.log(orderItem)
-        let partList=null;
-        let parts=null
-        if(orderId==partFetchingOrderId){
-          parts = orderParts
+      const partScreenStyle = {
+          backgroundColor: '#fff',
+          color: '#fff',
+          width: '70%',
+          height: '500px',
+          marginTop: '-300px',
+          marginLeft: '-35%',
         }
-        if(isFetchingOrderList&&orderId==partFetchingOrderId){
-          partList=<div>Fetching part...</div>
+      const closeButtonStyle ={
+          color:'#000',
+          cursor: 'pointer',
+          position: 'absolute',
+          fontSize: '1.8em',
+          right: '10px',
+          top: '0'
         }
-        else if(orderParts!==null&&orderParts!==undefined){
-            partList = <PartList
+        const{  orderItem, isFetchingOrderList, orderId, isUpdatingOrder,
+                updatingOrderId, savePart, storeState, actions,
+                } = this.props;
+        const{isFetchingPartList, isFailedFetchPartList, partList} = this.props.storeState.part
+        let thePartList
+        console.log(isFetchingPartList)
+        if(isFetchingPartList===true){
+          var divStyle={
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: '100px',
+            height: '100px',
+          }
+            thePartList=<div style={divStyle}><Spinner spinnerName='circle'/></div>
+        }
+        else if(partList!==null&&partList!==undefined){
+            thePartList = <PartList
                         savePart={savePart}
-                        partList={orderParts[orderId]}
+                        partList={partList}
                         storeState={storeState}
                         actions={actions}
                         />
 
         }
+        //console.log('xxxxxxxxxxxxxx')
+        console.log(thePartList)
         var inputOrderDate
         var saveButton
         var buttonValue;
@@ -79,9 +97,10 @@ class OrderItem extends Component{
           inputOrderDate = <input type="text" name="orderDate" value={this.state.orderItem.orderDate}  onChange={this.handleChange.bind(this)} disabled={disabled}/>;
           saveButton = <button name="save" onClick={this.handleSaveClick.bind(this,orderId)} disabled={disabled}>{buttonValue}</button>;
         }
+        var part=[{partId:1, partName:'test', partNumber:'test', partList:123, partNet:111, partType:'OEM'}]
         return (
             <tr>
-              <td onClick={() => this.refs.simpleDialog.show()}>{orderItem.garageName}</td>
+              <td onClick={this.handleOrderClick.bind(this)}>{orderItem.garageName}</td>
               <td>{orderItem.supplierName}</td>
               <td>{orderItem.orderDate}</td>
               <td>{orderItem.poNumber}</td>
@@ -90,8 +109,11 @@ class OrderItem extends Component{
               <td>{orderItem.orderNote}</td>
               <td><div>
                 {orderItem.claim}
-                <SkyLight hideOnOverlayClicked ref="simpleDialog" title="Hi, I'm a simple modal">
-                          Hello, I dont have any callback.
+                <SkyLight hideOnOverlayClicked ref="orderPartScreen" title=""
+                  dialogStyles={partScreenStyle}
+                  closeButtonStyle={closeButtonStyle}
+                  >
+                      {thePartList}
                 </SkyLight>
               </div></td>
             </tr>
