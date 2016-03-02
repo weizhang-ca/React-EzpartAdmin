@@ -19,7 +19,7 @@ class PartList extends Component{
       )
     }
     return (
-      <table>
+      <table className="table table-bordered table-hover table-condensed table-responsive">
         <tr>
           <th>Description</th>
           <th>Number</th>

@@ -94,7 +94,7 @@ class OrderItem extends Component{
           }
 
         if(this.state.editable){
-          inputOrderDate = <input type="text" name="orderDate" value={this.state.orderItem.orderDate}  onChange={this.handleChange.bind(this)} disabled={disabled}/>;
+          inputOrderDate = <input type="text" className="form-control"  name="orderDate" value={this.state.orderItem.orderDate}  onChange={this.handleChange.bind(this)} disabled={disabled}/>;
           saveButton = <button name="save" onClick={this.handleSaveClick.bind(this,orderId)} disabled={disabled}>{buttonValue}</button>;
         }
         var part=[{partId:1, partName:'test', partNumber:'test', partList:123, partNet:111, partType:'OEM'}]

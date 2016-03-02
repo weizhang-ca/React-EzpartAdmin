@@ -33,7 +33,7 @@ class GarageList extends Component{
         );
       }
       return(
-        <table>
+        <table className="table table-bordered table-hover table-condensed table-responsive">
           <tr>
             <th>Name</th>
             <th>Phone</th>

@@ -29,19 +29,19 @@ class OrderSearchForm extends Component{
     return(
       <div>
         Garage
-        <select name="garage"  value={this.state.garageId} onChange={this.handleChange.bind(this)}>
+        <select name="garage"  className="form-control"  value={this.state.garageId} onChange={this.handleChange.bind(this)}>
           <option value="-1">All</option>
           <option value="1">Garage1</option>
           <option value="2">Garage2</option>
         </select>
 
         Supplier
-        <select name="supplier" value={this.state.supplierId} onChange={this.handleChange.bind(this)}>
+        <select  className="form-control" name="supplier" value={this.state.supplierId} onChange={this.handleChange.bind(this)}>
           <option value="-1">All</option>
           <option value="1">Supplier1</option>
           <option value="2">Supplier2</option>
         </select>
-        <input type='button' onClick={this.handleSubmit.bind(this)} value='submit'/>
+        <input type='button' className="btn btn-default" onClick={this.handleSubmit.bind(this)} value='submit'/>
       </div>
     )
   }

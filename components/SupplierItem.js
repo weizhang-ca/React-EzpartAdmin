@@ -48,13 +48,13 @@ class SupplierItem extends Component{
         inputRegion, inputCountry, inputMaster, saveButton
     var disabled = false
     if(this.state.editable){
-      inputSupplierName = <input type='text' name='supplierName' value={this.state.supplier.supplierName} onChange={this.handleChange.bind(this)}></input>
-      inputPhone = <input type='text' name='phone' value={this.state.supplier.phone} onChange={this.handleChange.bind(this)}></input>
-      inputEmail = <input type='text' name='email' value={this.state.supplier.email} onChange={this.handleChange.bind(this)}></input>
-      inputAddress = <input type='text' name='address' value={this.state.supplier.address} onChange={this.handleChange.bind(this)}></input>
-      inputCity = <input type='text' name='city' value={this.state.supplier.city} onChange={this.handleChange.bind(this)}></input>
-      inputRegion = <input type='text' name='region' value={this.state.supplier.region} onChange={this.handleChange.bind(this)}></input>
-      inputCountry = <input type='text' name='country' value={this.state.supplier.country} onChange={this.handleChange.bind(this)}></input>
+      inputSupplierName = <input type='text' className="form-control" name='supplierName' value={this.state.supplier.supplierName} onChange={this.handleChange.bind(this)}></input>
+      inputPhone = <input type='text' className="form-control" name='phone' value={this.state.supplier.phone} onChange={this.handleChange.bind(this)}></input>
+      inputEmail = <input type='text' className="form-control" name='email' value={this.state.supplier.email} onChange={this.handleChange.bind(this)}></input>
+      inputAddress = <input type='text' className="form-control" name='address' value={this.state.supplier.address} onChange={this.handleChange.bind(this)}></input>
+      inputCity = <input type='text' className="form-control" name='city' value={this.state.supplier.city} onChange={this.handleChange.bind(this)}></input>
+      inputRegion = <input type='text' className="form-control" name='region' value={this.state.supplier.region} onChange={this.handleChange.bind(this)}></input>
+      inputCountry = <input type='text' className="form-control" name='country' value={this.state.supplier.country} onChange={this.handleChange.bind(this)}></input>
       var options = []
       options.push(<option value='0'>None</option>)
       options.push(<option value='3'>Advantage</option>)
@@ -79,7 +79,7 @@ class SupplierItem extends Component{
             <td><div className="view">{this.props.supplier.region}</div>{inputRegion}</td>
             <td><div className="view">{this.props.supplier.country}</div>{inputCountry}</td>
             <td><div className="view">{this.props.supplier.master}</div>{inputMaster}</td>
-            <td><div className="view"><button onClick={this.handleEditClick.bind(this)}>{editButtonValue}</button></div>{saveButton}</td>
+            <td><div className="view"><button className="btn btn-default" onClick={this.handleEditClick.bind(this)}>{editButtonValue}</button></div>{saveButton}</td>
             </tr>
       }
 }

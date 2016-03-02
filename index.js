@@ -11,6 +11,8 @@ import SupplierList from './components/SupplierList'
 import GarageItem from './components/GarageItem'
 import AddSupplierForm from './components/AddSupplierForm'
 import OrderList from './components/OrderList'
+import CarMakeList from './components/CarMakeList'
+import Invoice from './components/Invoice'
 const store = configureStore()
 
 render(
@@ -23,6 +25,8 @@ render(
           <Route path="suppliers" component={SupplierList}></Route>
           <Route path="garages/:garageId/addSupplier" component={AddSupplierForm}></Route>
           <Route path="orders" component={OrderList}></Route>
+          <Route path="carMakes" component={CarMakeList}></Route>
+          <Route path="invoices" component={Invoice}></Route>
         </Route>
       </Route>
     </Router>

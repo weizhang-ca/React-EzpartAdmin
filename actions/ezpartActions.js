@@ -275,36 +275,6 @@ export function fetchPartList(orderId){
         .catch((error)=>failedFetchPartList(error))
   }
 }
-function requestOrders(){
-  return{
-    type: types.REQUEST_ORDERS
-  }
-}
-function receiveOrders(orderList){
-  return{
-    type: types.RECEIVE_ORDERS,
-    orderList
-  }
-}
-export function fetchOrders(criteria){
-  return (dispatch)=>{
-    dispatch(requestOrders())
-    var orderList={
-      1:{garageId:1, supplierId:1, garageName:'Test Garage1', supplierName:'Test Supplier1', orderDate:'2016-01-30', po:"123123", totalValue:123.31, totalPart:8},
-      2:{garageId:1, supplierId:2, garageName:'Test Garage1', supplierName:'Test Supplier2', orderDate:'2016-01-30', po:"444512", totalValue:513.1, totalPart:6},
-      3:{garageId:2, supplierId:1, garageName:'Test Garage2', supplierName:'Test Supplier1', orderDate:'2016-01-30', po:"4134", totalValue:636.41, totalPart:2},
-      4:{garageId:2, supplierId:2, garageName:'Test Garage2', supplierName:'Test Supplier2', orderDate:'2016-01-30', po:"31414", totalValue:3241.123, totalPart:15}
-    }
-    setTimeout(()=>{return dispatch(receiveOrders(orderList))}, 1000)
-  }
-}
-export function clearOrderParts(orderId){
-  return {
-    type: types.CLEAR_ORDERPARTS,
-    orderId:orderId,
-    orderParts: {}
-  }
-}
 
 function requestSaveOrder(orderId){
   console.log("dispatch requestSaveOrder")
@@ -350,5 +320,63 @@ export function savePart(partItem, partId){
       1:{partName:'Bumper ASYNC', partNumber:'839182XXX', partList:'100', partNet:'90', partType:'OEM', qty:1}
     }
     setTimeout(()=>{return dispatch(receiveSavePart(newPartItem, partId))}, 1000)
+  }
+}
+
+function requestCarMakeList(){
+  return {
+    type: types.REQUEST_CARMAKE_LIST
+  }
+}
+function receiveCarMakeList(carMakeList){
+  console.log(carMakeList)
+  return{
+    type: types.RECEIVE_CARMAKE_LIST,
+    carMakeList
+  }
+}
+function FailedFetchCarMakeList(error){
+  //console.log(error)
+  return{
+    type: types.FAILED_FETCH_CARMAKE_LIST,
+    error
+  }
+}
+export function fetchCarMakeList(){
+    return (dispatch)=>{
+      dispatch(requestCarMakeList())
+      fetch('http://localhost/json/carmakes/')
+        .then(checkHttpReponseStatus)
+        .then(parseJSON)
+        .then((json)=>dispatch(receiveCarMakeList(json)))
+        //.catch((error)=>{dispatch(FailedFetchOrderList(error))})
+    }
+}
+function requestSaveCarMake(){
+  return{
+    type:types.REQUEST_SAVE_CARMAKE
+  }
+}
+function receiveSaveCarMake(){
+  return{
+    type:types.RECEIVE_SAVE_CARMAKE,
+  }
+}
+function failedSaveCarMake(error){
+  return{
+    type:types.FAILED_SAVE_CARMAKE,
+    error
+  }
+}
+export function saveCarMake(carMake){
+  return (dispatch)=>{
+    dispatch(requestSaveCarMake)
+    fetch('http://localhost/json/updateCarMake/',{
+      method:'post',
+      header:postHeader,
+      body:JSON.stringify(carMake)
+    }).then(checkHttpReponseStatus)
+      .then(parseJSON)
+      .then((json)=>{dispatch(receiveSaveCarMake)})
   }
 }

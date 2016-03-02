@@ -57,12 +57,12 @@ class PartItem extends Component{
         disabled = true;
       }
       if(this.state.editable){
-        inputPartName = <input type="text" name="partName" value={this.state.partItem.partName} onChange={this.handleChange.bind(this)}/>
-        inputPartNumber = <input type="text" name="partNumber" value={this.state.partItem.partNumber} onChange={this.handleChange.bind(this)}/>
-        inputPartList = <input type="text" name="partList" value={this.state.partItem.partList} onChange={this.handleChange.bind(this)}/>
-        inputPartNet = <input type="text" name="partNet" value={this.state.partItem.partNet} onChange={this.handleChange.bind(this)}/>
-        inputPartType = <input type="text" name="partType" value={this.state.partItem.partType} onChange={this.handleChange.bind(this)}/>
-        saveButton = <button onClick={this.handleSaveClick.bind(this, partId)} disabled={disabled}>{saveButtonValue}</button>
+        inputPartName = <input type="text" className="form-control" name="partName" value={this.state.partItem.partName} onChange={this.handleChange.bind(this)}/>
+        inputPartNumber = <input type="text" className="form-control" name="partNumber" value={this.state.partItem.partNumber} onChange={this.handleChange.bind(this)}/>
+        inputPartList = <input type="text" className="form-control" name="partList" value={this.state.partItem.partList} onChange={this.handleChange.bind(this)}/>
+        inputPartNet = <input type="text" className="form-control" name="partNet" value={this.state.partItem.partNet} onChange={this.handleChange.bind(this)}/>
+        inputPartType = <input type="text" className="form-control" name="partType" value={this.state.partItem.partType} onChange={this.handleChange.bind(this)}/>
+        saveButton = <button className="btn btn-default" onClick={this.handleSaveClick.bind(this, partId)} disabled={disabled}>{saveButtonValue}</button>
       }
 
       return(
@@ -74,7 +74,7 @@ class PartItem extends Component{
               <td><div className="view">{partItem.partList}</div>{inputPartList}</td>
               <td><div className="view">{partItem.partNet}</div>{inputPartNet}</td>
               <td><div className="view">{partItem.partType}</div>{inputPartType}</td>
-              <td><div className="view"><button onClick={this.handleEditClick.bind(this)} disabled={disabled}>{editButtonValue}</button></div>{saveButton}</td>
+              <td><div className="view"><button className="btn btn-default" onClick={this.handleEditClick.bind(this)} disabled={disabled}>{editButtonValue}</button></div>{saveButton}</td>
             </tr>
       )
     }

@@ -15,13 +15,14 @@ class GarageItem extends Component{
 
   render(){
     //console.log('render GarageItem');
-    var inputGarageName;
-    var inputAddress;
-    var inputCity;
-    var inputPhone;
-    var inputEmail;
-    var saveButton;
+    var inputGarageName
+    var inputAddress
+    var inputCity
+    var inputPhone
+    var inputEmail
+    var saveButton
     var inputMaster
+    var inputRegion, inputCountry
     var editButtonValue = 'Edit'
     var saveButtonValue = 'Save'
     var disabled = false
@@ -35,13 +36,14 @@ class GarageItem extends Component{
       disabled = true
     }
     if(this.state.editable){
-      inputGarageName = <input type="text" name="garageName" value={this.state.garage.garageName} onChange={this.handleChange.bind(this)}/>;
-      inputPhone = <input type="text" name="phone" value={this.state.garage.phone} onChange={this.handleChange.bind(this)}/>;
-      inputEmail = <input type="text" name="email" value={this.state.garage.email} onChange={this.handleChange.bind(this)}/>;
-      inputAddress = <input type="text" name="address" value={this.state.garage.address}  onChange={this.handleChange.bind(this)}/>;
-      inputCity = <input type="text" name="city" value={this.state.garage.city}  onChange={this.handleChange.bind(this)}/>;
-      inputPhone = <input type="text" name="phone" value={this.state.garage.phone}  onChange={this.handleChange.bind(this)}/>;
-      inputEmail = <input type="text" name="email" value={this.state.garage.email}  onChange={this.handleChange.bind(this)}/>;
+      inputGarageName = <input type="text"  className="form-control"   name="garageName" value={this.state.garage.garageName} onChange={this.handleChange.bind(this)}/>;
+      inputPhone = <input type="text"  className="form-control"  name="phone" value={this.state.garage.phone} onChange={this.handleChange.bind(this)}/>;
+      inputEmail = <input type="text"  className="form-control"  name="email" value={this.state.garage.email} onChange={this.handleChange.bind(this)}/>;
+      inputAddress = <input type="text"  className="form-control"  name="address" value={this.state.garage.address}  onChange={this.handleChange.bind(this)}/>;
+      inputCity = <input type="text"  className="form-control"  name="city" value={this.state.garage.city}  onChange={this.handleChange.bind(this)}/>;
+      inputPhone = <input type="text"  className="form-control"  name="phone" value={this.state.garage.phone}  onChange={this.handleChange.bind(this)}/>;
+      inputEmail = <input type="text"  className="form-control"  name="country" value={this.state.garage.country}  onChange={this.handleChange.bind(this)}/>;
+      inputRegion = <input type="text"  className="form-control"  name="region" value={this.state.garage.region}  onChange={this.handleChange.bind(this)}/>;
 
       var options = []
       options.push(<option value='0'>None</option>)
@@ -49,7 +51,7 @@ class GarageItem extends Component{
         options.push(<option value='3'>{masterList[props]}</option>)
       }
       inputMaster =
-      <select name='masterId' value={this.state.garage.masterId} onChange={this.handleChange.bind(this)}>
+      <select name='masterId' className="form-control" value={this.state.garage.masterId} onChange={this.handleChange.bind(this)}>
       {options}
     </select>
       /*
@@ -59,7 +61,7 @@ class GarageItem extends Component{
         options={options}
         />
         */
-      saveButton = <button onClick={this.handleSaveClick.bind(this)} disabled={disabled}>{saveButtonValue}</button>;
+      saveButton = <button  className="btn btn-default" onClick={this.handleSaveClick.bind(this)} disabled={disabled}>{saveButtonValue}</button>;
     }
     return <tr
             className={classNames({
@@ -70,12 +72,12 @@ class GarageItem extends Component{
               <td><div className="view">{this.state.garage.phone}</div>{inputAddress}</td>
               <td><div className="view">{this.state.garage.email}</div>{inputCity}</td>
               <td><div className="view">{this.state.garage.address}</div>{inputPhone}</td>
-              <td><div className="view">{this.state.garage.city}</div>{inputEmail}</td>
-              <td><div className="view">{this.state.garage.region}</div>{inputEmail}</td>
-              <td><div className="view">{this.state.garage.country}</div>{inputEmail}</td>
+              <td><div className="view">{this.state.garage.city}</div>{inputCity}</td>
+              <td><div className="view">{this.state.garage.region}</div>{inputRegion}</td>
+              <td><div className="view">{this.state.garage.country}</div>{inputCountry}</td>
               <td><div className="view">{this.state.garage.master}</div>{inputMaster}</td>
-              <td><div className="view"><button onClick={this.handleEditClick.bind(this)} disabled={disabled}>{editButtonValue}</button></div>{saveButton}</td>
-              <td><button onClick={this._handleDeleteOnClick}>delete</button></td>
+              <td><div className="view"><button  className="btn btn-default" onClick={this.handleEditClick.bind(this)} disabled={disabled}>{editButtonValue}</button></div>{saveButton}</td>
+              <td><button  className="btn btn-default" onClick={this._handleDeleteOnClick}>delete</button></td>
               <td><Link to={`/garages/${garageId}/supplierlist`}>supllier list</Link></td>
           </tr>;
   }
@@ -88,7 +90,7 @@ class GarageItem extends Component{
     var garageId = this.props.garageId;
     var updatedGarage = {};
     updatedGarage = this.state.garage;
-    console.log(event.target.name)
+    //console.log(event.target.name)
     switch(event.target.name){
        case 'garageName':
          updatedGarage = assign({}, this.state.garage, {garageName:event.target.value})

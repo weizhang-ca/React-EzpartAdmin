@@ -46,7 +46,7 @@ class OrderList extends Component{
     return(
       <div>
         <OrderSearchForm fetchOrderList={this.props.actions.fetchOrderList}/>
-          <table>
+          <table className="table table-bordered table-hover table-condensed table-responsive">
             <tr>
               <th>Garage</th>
               <th>Supplier</th>

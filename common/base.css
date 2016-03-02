@@ -12,31 +12,6 @@ p {
 	margin: 20px 0;
 }
 
-	/*
-	Generic Styling, for Desktops/Laptops
-	*/
-	table {
-		margin-top: 20px;
-		font-size:13px;
-		width: 100%;
-		border-collapse: collapse;
-		table-layout: fixed
-	}
-	/* Zebra striping */
-	tr:nth-of-type(odd) {
-		background: #eee;
-	}
-	th {
-		background: #DBDBDB;
-		font-weight:normal;
-	}
-	td, th {
-		padding: 3px;
-		border: 1px solid #ccc;
-		text-align: left;
-		width: 130px;
-		max-width: 130px;
-	}
 html,
 
 .mainSection{
@@ -47,7 +22,6 @@ button {
 
 li {
 	position: relative;
-	font-size: 24px;
 	border-bottom: 1px dotted #ccc;
 }
 
@@ -78,6 +52,7 @@ div.editing .view {
 .view{
 
 }
+/*
 .Table
 {
 	display: table;   	width: 100%;
@@ -100,6 +75,7 @@ div.editing .view {
 		//overflow: hidden;
 		       /* for IE as it does not support min-height */
 }
+*/
 @media (min-width: 899px) {
 	.learn-bar {
 		width: auto;
