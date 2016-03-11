@@ -2,9 +2,9 @@ import {SAVE_GARAGE, REMOVE_GARAGE, ADD_GARAGE, GET_GARAGE_LIST, DISPLAY_SUPPLIE
   REQUEST_GARAGE_LIST, RECEIVE_GARAGE_LIST,FETCH_GARAGELIST_FAILED, REQUEST_UPDATE_GARAGE,
   RECEIVE_UPDATE_GARAGE, FAILED_UPDATE_GARAGE } from '../constants/ActionTypes';
 import assign from 'object-assign';
-const initialState = {garageList:{}};
+const initialState = {garageList:[], isFetchingGarageList:false, isUpdatingGarage:false,fetchGarageListFailed:false}
 export default function garageReducer(state=initialState, action){
-  console.log(action.type);
+  //console.log(action.type);
   switch(action.type){
     case GET_GARAGE_LIST:
       //console.log('Display garage list...')

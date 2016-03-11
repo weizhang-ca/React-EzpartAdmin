@@ -9,7 +9,7 @@ class OrderItem extends Component{
       super(props, context)
       this.state={
         editable:this.props.isEditingOrder,
-        orderItem: this.props.orderItem
+        order: this.props.order
       }
     }
 
@@ -24,14 +24,14 @@ class OrderItem extends Component{
       switch(event.target.name){
         case 'orderDate':
           //console.log(event.target.value+'update orderDate..................')
-          var newState = assign({}, this.state.orderItem, {orderDate:event.target.value});
+          var newState = assign({}, this.state.order, {orderDate:event.target.value});
           //console.log(newState)
-          this.setState({orderItem:newState})
+          this.setState({order:newState})
           break;
       }
     }
     handleSaveClick(orderId){
-      this.props.saveOrder(this.state.orderItem, orderId);
+      this.props.actions.updateOrder(this.state.order);
       this.setState({editable:false})
     }
     render(){
@@ -51,12 +51,11 @@ class OrderItem extends Component{
           right: '10px',
           top: '0'
         }
-        const{  orderItem, isFetchingOrderList, orderId, isUpdatingOrder,
+        const{  order, isUpdatingOrder,
                 updatingOrderId, savePart, storeState, actions,
                 } = this.props;
         const{isFetchingPartList, isFailedFetchPartList, partList} = this.props.storeState.part
         let thePartList
-        console.log(isFetchingPartList)
         if(isFetchingPartList===true){
           var divStyle={
             position: 'absolute',
@@ -76,8 +75,6 @@ class OrderItem extends Component{
                         />
 
         }
-        //console.log('xxxxxxxxxxxxxx')
-        console.log(thePartList)
         var inputOrderDate
         var saveButton
         var buttonValue;
@@ -86,7 +83,7 @@ class OrderItem extends Component{
         editButtonValue = 'edit'
         var disabled=false;
         if(isUpdatingOrder){
-          if( updatingOrderId==orderId){
+          if( updatingOrderId==order.orderId){
               buttonValue = 'Updating...'
               editButtonValue = 'Updating...'
             }
@@ -94,21 +91,21 @@ class OrderItem extends Component{
           }
 
         if(this.state.editable){
-          inputOrderDate = <input type="text" className="form-control"  name="orderDate" value={this.state.orderItem.orderDate}  onChange={this.handleChange.bind(this)} disabled={disabled}/>;
-          saveButton = <button name="save" onClick={this.handleSaveClick.bind(this,orderId)} disabled={disabled}>{buttonValue}</button>;
+          inputOrderDate = <input type="text" className="form-control"  name="orderDate" value={this.state.order.orderDate}  onChange={this.handleChange.bind(this)} disabled={disabled}/>;
+          saveButton = <button name="save" onClick={this.handleSaveClick.bind(this,order.orderId)} disabled={disabled}>{buttonValue}</button>;
         }
         var part=[{partId:1, partName:'test', partNumber:'test', partList:123, partNet:111, partType:'OEM'}]
         return (
             <tr>
-              <td onClick={this.handleOrderClick.bind(this)}>{orderItem.garageName}</td>
-              <td>{orderItem.supplierName}</td>
-              <td>{orderItem.orderDate}</td>
-              <td>{orderItem.poNumber}</td>
-              <td>{orderItem.totalValue}</td>
-              <td>{orderItem.totalPart}</td>
-              <td>{orderItem.orderNote}</td>
+              <td onClick={this.handleOrderClick.bind(this)}>{order.garageName}</td>
+              <td>{order.supplierName}</td>
+              <td>{order.orderDate}</td>
+              <td>{order.poNumber}</td>
+              <td>{order.totalValue}</td>
+              <td>{order.totalPart}</td>
+              <td>{order.orderNote}</td>
               <td><div>
-                {orderItem.claim}
+                {order.claim}
                 <SkyLight hideOnOverlayClicked ref="orderPartScreen" title=""
                   dialogStyles={partScreenStyle}
                   closeButtonStyle={closeButtonStyle}

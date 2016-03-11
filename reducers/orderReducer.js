@@ -1,55 +1,30 @@
 import {
-  DISPLAY_ORDERLIST, DISPLAY_ORDERPARTS, REQUEST_ORDERPARTS, RECEIVE_ORDERPARTS,
-  RECEIVE_ORDER_LIST, REQUEST_ORDER_LIST, CLEAR_ORDERPARTS, REQUEST_SAVE_ORDER, RECEIVE_SAVE_ORDER
+  RECEIVE_ORDER_LIST, REQUEST_ORDER_LIST, REQUEST_UPDATE_ORDER, RECEIVE_UPDATE_ORDER,
+  FAILED_FETCH_ORDER_LIST, FAILED_UPDATE_ORDER
 } from '../constants/ActionTypes'
 
-var initialState = {orderList:{}, orderParts:{}, isFetching:false}
+var initialState = {orderList:{}, isFetchingOrderList:false, isUpdatingOrder: false}
 export default function orderReducer(state=initialState, action){
-  console.log('action type is')
-  console.log(action.type)
   switch(action.type){
-    case DISPLAY_ORDERLIST:
-      console.log('display orderlist...')
-      console.log(state)
-      var newOrderList = Object.assign({}, state.orderList)
-      newOrderList = action.orderList
-      return {orderList: newOrderList}
-    case DISPLAY_ORDERPARTS:
-      console.log('display orderparts...')
-      console.log(state)
-      var newOrderParts = Object.assign({}, state.orderParts)
-      newOrderParts = action.orderParts
-      return {orderParts: newOrderParts, orderList:state.orderList}
-    case REQUEST_ORDERPARTS:
-      console.log('request orderparts...')
-      return{orderParts:{}, isFetchingOrderParts: true, partFetchingOrderId:action.orderId, orderList:state.orderList}
-    case RECEIVE_ORDERPARTS:
-      console.log('receive orderparts...')
-      console.log(action)
-      let orderParts={}
-      orderParts[action.orderId] = action.orderParts
-      return{orderParts:orderParts, isFetchingOrderParts:false, partFetchingOrderId:action.orderId, orderList:state.orderList}
     case REQUEST_ORDER_LIST:
-      console.log('request orders...')
       return Object.assign({}, state, {isFetchingOrderList:true})
     case RECEIVE_ORDER_LIST:
-      console.log('receive orders...')
       return Object.assign({}, state, {isFetchingOrderList:false, orderList:action.orderList})
-    case CLEAR_ORDERPARTS:
-      console.log('clear order parts...')
-      orderParts={}
-      orderParts[action.orderId] = action.orderParts
-      //return{orderParts:orderParts, isFetchingOrderParts:false, partFetchingOrderId:0, orderList:state.orderList}
-      return Object.assign({},  state, {partFetchingOrderId:0, orderParts:orderParts})
-    case REQUEST_SAVE_ORDER:
-      console.log('request save order')
-      console.log('order id is: '+action.orderId)
+    case FAILED_FETCH_ORDER_LIST:
+      return Object.assign({}, state, {isFetchingOrderList:false, error:action.error})
+    case REQUEST_UPDATE_ORDER:
       return Object.assign({}, state, {isUpdatingOrder: true, updatingOrderId:action.orderId})
-    case RECEIVE_SAVE_ORDER:
-      console.log('receive save order')
-      var newOrderList = Object.assign({}, state.orderList, action.orderItem)
-      console.log(newOrderList)
-      return Object.assign({}, state, {orderList: newOrderList, isUpdatingOrder: false, isEditingOrder:false, updatingOrderId:action.orderId})
+    case RECEIVE_UPDATE_ORDER:
+      if(action.isSuccess === true){
+          state.orderList.some((order)=>{
+            if(order.orderId == action.order.orderId){
+              order = Object.assign(order, action.order)
+            }
+          })
+      }
+      return Object.assign({}, state, {isUpdatingOrder: false, updatingOrderId:action.order.orderId, isUpdatingSuccess:action.isSuccess, info:action.info})
+    case FAILED_UPDATE_ORDER:
+      return Object.assign({}, state, {isUpdatingOrder: false, updatingOrderId:action.orderId, error: action.error})
     default:
       return state
   }

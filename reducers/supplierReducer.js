@@ -3,7 +3,8 @@ import {DISPLAY_SUPPLIERLIST, ADD_SUPPLIER, REQUEST_SUPPLIER_LIST, RECEIVE_SUPPL
         FAILED_UPDATE_SUPPLIER, REQUEST_ADD_SUPPLIER, RECEIVE_ADD_SUPPLIER,
         FAILED_ADD_SUPPLIER} from '../constants/ActionTypes'
 import assign from 'object-assign'
-var initialState = {supplierList:{}}
+const initialState = {supplierList:[], isFetchingSupplierList:false, isUpdatingSupplier:false,isFailedFetchSupplierList:false,
+                      isFailedUpdateSupplier:false}
 export default function supplierReducer(state=initialState, action){
     switch(action.type){
       case DISPLAY_SUPPLIERLIST:
@@ -23,9 +24,9 @@ export default function supplierReducer(state=initialState, action){
       case FAILED_FETCH_SUPPLIER_LIST:
         return Object.assign({}, state, {isFetchingSupplierList: false, isFailedFetchSupplierList:true})
       case REQUEST_UPDATE_SUPPLIER:
-        return Object.assign({}, state, {isUpdatingSupplier:true, asyncOpSupplierId:action.supplierId})
+        return Object.assign({}, state, {isUpdatingSupplier:true, updatingSupplierId:action.supplierId})
       case RECEIVE_UPDATE_SUPPLIER:
-        return Object.assign({}, state, {isUpdatingSupplier:false, asyncOpSupplierId:action.supplierId})
+        return Object.assign({}, state, {isUpdatingSupplier:false, updatingSupplierId:action.supplierId})
       case FAILED_UPDATE_SUPPLIER:
         return Object.assign({}, state, {isUpdatingSupplier:false, isFailedUpdateSupplier:true})
       case REQUEST_ADD_SUPPLIER:

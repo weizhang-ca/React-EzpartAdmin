@@ -11,8 +11,8 @@ function checkHttpReponseStatus(response){
   if (response.status >= 200 && response.status < 300) {
     return response
   } else {
-    var error = new Error(response.statusText)
-    error.response = response
+    var error = new Error(response.status)
+    //error.response = response
     throw error
   }
 }
@@ -35,14 +35,12 @@ function requestGarageList(){
   }
 }
 function receiveGarageList(garageList){
-  console.log(garageList)
   return{
     type: types.RECEIVE_GARAGE_LIST,
     garageList
   }
 }
 function FailedFetchGarageList(error){
-  console.log(error)
   return{
     type: types.FETCH_GARAGELIST_FAILED,
     error
@@ -51,7 +49,7 @@ function FailedFetchGarageList(error){
 export function fetchGarageList(criteria=null){
     return (dispatch)=>{
       dispatch(requestGarageList())
-      fetch('http://localhost/json/')
+      fetch('http://localhost/garage',{method:'get'})
         .then(checkHttpReponseStatus)
         .then(parseJSON)
         .then((json)=>dispatch(receiveGarageList(json)))
@@ -67,30 +65,29 @@ function requestUpdateGarage(garageId){
   }
 }
 function receiveUpdateGarage(result){
-  console.log('garageId is: '+result.garageId)
   return {
     type: types.RECEIVE_UPDATE_GARAGE,
     garageId: result.garageId
   }
 }
 function failedUpdateGarage(error){
-  console.log(error)
   return{
     type: types.FAILED_UPDATE_GARAGE,
     error
   }
 }
 export function fetchUpdateGarage(garage){
+  //console.log('xxxxxxxxxxxxx')
   return (dispatch)=>{
     dispatch(requestUpdateGarage(garage.garageId))
-    fetch('http://localhost/json/updateGarage/',{
-      method:'post',
+    fetch('http://localhost/json/garage',{
+      method:'POST',
       header:postHeader,
       body:JSON.stringify(garage)
     }).then(checkHttpReponseStatus)
       .then(parseJSON)
       .then((json)=>dispatch(receiveUpdateGarage(json)))
-      //.catch((error)=>{dispatch(failedUpdateGarage(error))})
+      .catch((error)=>{dispatch(failedUpdateGarage(error))})
   }
 }
 function requestSupplierList(){
@@ -99,14 +96,12 @@ function requestSupplierList(){
   }
 }
 function receiveSupplierList(supplierList){
-  console.log(supplierList)
   return{
     type: types.RECEIVE_SUPPLIER_LIST,
     supplierList
   }
 }
 function FailedFetchSupplierList(error){
-  console.log(error)
   return{
     type: types.FAILED_FETCH_SUPPLIER_LIST,
     error
@@ -115,7 +110,7 @@ function FailedFetchSupplierList(error){
 export function fetchSupplierList(criteria=null){
     return (dispatch)=>{
       dispatch(requestSupplierList())
-      fetch('http://localhost/json/suppliers/')
+      fetch('http://localhost/json/suppliers')
         .then(checkHttpReponseStatus)
         .then(parseJSON)
         .then((json)=>dispatch(receiveSupplierList(json)))
@@ -124,16 +119,16 @@ export function fetchSupplierList(criteria=null){
         })
     }
   }
-function requestUpdateSupplier(garageId){
+function requestUpdateSupplier(supplierId){
   return {
     type: types.REQUEST_UPDATE_SUPPLIER,
-    garageId
+    supplierId
   }
 }
-function receiveUpdateSupplier(garageId){
+function receiveUpdateSupplier(result){
   return {
     type: types.RECEIVE_UPDATE_SUPPLIER,
-    garageId
+    supplierId:result.supplierId
   }
 }
 function failedUpdateSupplier(error){
@@ -144,15 +139,15 @@ function failedUpdateSupplier(error){
 }
 export function fetchUpdateSupplier(supplier){
   return (dispatch)=>{
-    dispatch(requestUpdateGarage(supplier.supplierId))
-    fetch('http://localhost/json/updateGarage/',{
+    dispatch(requestUpdateSupplier(supplier.supplierId))
+    fetch('http://localhost/json/suppliers',{
       method:'post',
       header:postHeader,
       body:JSON.stringify(supplier)
     }).then(checkHttpReponseStatus)
       .then(parseJSON)
-      .then((json)=>dispatch(receiveUpdateGarage(json)))
-      .catch((error)=>{dispatch(failedUpdateGarage(error))})
+      .then((json)=>dispatch(receiveUpdateSupplier(json)))
+      .catch((error)=>{dispatch(failedUpdateSupplier(error))})
   }
 }
 function requestAddSupplier(){
@@ -191,14 +186,12 @@ function requestOrderList(){
   }
 }
 function receiveOrderList(orderList){
-  console.log(orderList)
   return{
     type: types.RECEIVE_ORDER_LIST,
     orderList
   }
 }
 function FailedFetchOrderList(error){
-  console.log(error)
   return{
     type: types.FAILED_FETCH_ORDER_LIST,
     error
@@ -214,11 +207,15 @@ export function fetchOrderList(criteria=defaultFetchOrderCriteria){
 
     return (dispatch)=>{
       dispatch(requestOrderList())
-      fetch('http://localhost/json/orders/?filter='+filter)
+      fetch('http://localhost/json/orders',
+          {
+            method:'post',
+            body:filter
+          })
         .then(checkHttpReponseStatus)
         .then(parseJSON)
         .then((json)=>dispatch(receiveOrderList(json)))
-        //.catch((error)=>{dispatch(FailedFetchOrderList(error))})
+        .catch((error)=>{dispatch(FailedFetchOrderList(error))})
     }
 }
 
@@ -248,6 +245,7 @@ export function displayOrderParts(orderParts){
 }
 
 function requestPartList(orderId){
+  console.log('xxxxxxxxxxxxx')
   return{
     type: types.REQUEST_PART_LIST,
     orderId
@@ -260,15 +258,16 @@ function receivePartList(partList){
   }
 }
 function failedFetchPartList(error){
+  console.log('aaaaaaaaaa')
+  console.log(error)
   return{
-    type: types.FAILED_FETCH_PART_LIST,
-    error
+    type: types.FAILED_FETCH_PART_LIST
   }
 }
-export function fetchPartList(orderId){
+export function fetchPartList(orderId=''){
   return function(dispatch){
     dispatch(requestPartList(orderId))
-    fetch('http://localhost/json/parts/')
+    fetch('http://localhost/json/parts')
         .then(checkHttpReponseStatus)
         .then(parseJSON)
         .then((json)=>dispatch(receivePartList(json)))
@@ -276,50 +275,77 @@ export function fetchPartList(orderId){
   }
 }
 
-function requestSaveOrder(orderId){
-  console.log("dispatch requestSaveOrder")
+function requestUpdateOrder(orderId){
   return{
-    type: types.REQUEST_SAVE_ORDER,
+    type: types.REQUEST_UPDATE_ORDER,
     orderId
   }
 }
-function receiveSaveOrder(orderItem, orderId){
+/*
+* The message should contain isSuccess and if fails,
+* unsuccessful info . E.g., the PO is not a valid number
+*/
+function receiveUpdateOrder(message, order){
   return{
-    type: types.RECEIVE_SAVE_ORDER,
-    orderItem,
-    orderId
+    type: types.RECEIVE_UPDATE_ORDER,
+    isSuccess:message.isSuccess,
+    info: message.info,
+    order
   }
 }
-export function saveOrder(orderItem, orderId){
+function failedUpdateOrder(error, orderId){
+  return{
+    type: types.FAILED_UPDATE_ORDER,
+    orderId,
+    error
+  }
+}
+export function updateOrder(order){
   return (dispatch)=>{
-    dispatch(requestSaveOrder(orderId))
-    var orderItem={
-      1:{garageId:1, supplierId:1, garageName:'Test Garage', supplierName:'Test Supplier', orderDate:'2016-01-22', po:"123123", totalValue:123.31, totalPart:8},
-    }
-    setTimeout(()=>{return dispatch(receiveSaveOrder(orderItem, orderId))}, 2000)
+    dispatch(requestUpdateOrder(order.orderId))
+    fetch('http://localhost/json/orders',
+      {
+        method: 'PUT',
+        body: JSON.stringify(order)
+      })
+      .then(checkHttpReponseStatus)
+      .then(parseJSON)
+      .then((json)=>(dispatch(receiveUpdateOrder(json, order))))
+      .catch((error)=>failedUpdateOrder(error, order.orderId))
   }
 }
 
-function requestSavePart(partId){
+function requestUpdatePart(partId){
   return{
-    type: types.REQUEST_SAVE_PART,
+    type: types.REQUEST_UPDATE_PART,
     partId
   }
 }
-function receiveSavePart(partItem, partId){
+function receiveUpdatePart(message){
   return{
-    type: types.RECEIVE_SAVE_PART,
-    partItem,
+    type: types.RECEIVE_UPDATE_PART,
+    isSuccess: message.isSuccess,
+    info: message.info
+  }
+}
+function failedUpdatePart(error, partId){
+  return{
+    type: types.FAILED_UPDATE_PART,
     partId
   }
 }
-export function savePart(partItem, partId){
+export function updatePart(part){
   return (dispatch)=>{
-    dispatch(requestSavePart(partId))
-    var newPartItem={
-      1:{partName:'Bumper ASYNC', partNumber:'839182XXX', partList:'100', partNet:'90', partType:'OEM', qty:1}
-    }
-    setTimeout(()=>{return dispatch(receiveSavePart(newPartItem, partId))}, 1000)
+    dispatch(requestUpdatePart(part.partId))
+    fetch('http://locahost/json/parts',
+        {
+          method: 'PUT',
+          body: JSON.stringify(part)
+        })
+        .then(checkHttpReponseStatus)
+        .then(parseJSON)
+        .then((json)=>{dispatch(receiveUpdatePart(json))})
+        .catch((error)=>{failedUpdatePart(error, part.partId)})
   }
 }
 
@@ -329,7 +355,6 @@ function requestCarMakeList(){
   }
 }
 function receiveCarMakeList(carMakeList){
-  console.log(carMakeList)
   return{
     type: types.RECEIVE_CARMAKE_LIST,
     carMakeList
