@@ -49,7 +49,7 @@ describe('async order operations', ()=>{
       store.dispatch(actions.fetchOrderList())
   })
 
-  it('create FAILED_FETCH_ORDER_LIST when something is wrong with the API', (done)=>{
+  it('create FAILED_FETCH_ORDER_LIST when API replies 400+', (done)=>{
     nock('http://localhost')
       .post('/json/orders')
       .reply(400)
@@ -90,7 +90,7 @@ describe('async order operations', ()=>{
       store.dispatch(actions.updateOrder(order))
   })
 
-  it('create RECEIVE_UPDATE_ORDER when update order fails', (done)=>{
+  it('create RECEIVE_UPDATE_ORDER when update order fails due to violation of constraints', (done)=>{
     let order = {
       orderId:1, gargeName:'Test Shop 1x', supplierName:'Test Supplier 1', orderDate:'2016-01-01',
       shipDate:'2016-01-01', receiveDate:'2016-01-01', poNumber:'12345', orderNote:'Test 1',
@@ -113,5 +113,29 @@ describe('async order operations', ()=>{
       ]
       const store = mockStore({}, expectedActions, done)
       store.dispatch(actions.updateOrder(order))
+  })
+
+  it('create FAILED_UPDATE_ORDER when API replies 400+ code', (done)=>{
+    let order = {
+      orderId:1, gargeName:'Test Shop 1x', supplierName:'Test Supplier 1', orderDate:'2016-01-01',
+      shipDate:'2016-01-01', receiveDate:'2016-01-01', poNumber:'12345', orderNote:'Test 1',
+      totalList:100.00, totalNet:90.00, totalPart:12, claim:'123321'
+    }
+    nock('http://localhost')
+      .intercept('/json/orders','PUT', order)
+      .reply(400)
+    let error = new Error(400)
+    const expectedActions = [
+      {
+        type: types.REQUEST_UPDATE_ORDER,
+        orderId: order.orderId
+      },
+      {
+        type: types.FAILED_UPDATE_ORDER,
+        error
+      }
+    ]
+    const store = mockStore({}, expectedActions, done)
+    store.dispatch(actions.updateOrder(order))
   })
 })

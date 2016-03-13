@@ -36,7 +36,7 @@ describe('async supplier operations', () => {
     store.dispatch(actions.fetchSupplierList())
   })
 
-  it('creates FAILED_FETCH_SUPPLIER_LIST when something wrong with the API', (done) => {
+  it('creates FAILED_FETCH_SUPPLIER_LIST when API replies 400+', (done) => {
     nock('http://localhost')
       .get('/json/suppliers')
       .reply(400)
@@ -50,7 +50,7 @@ describe('async supplier operations', () => {
     store.dispatch(actions.fetchSupplierList())
   })
 
-    it('creates RECEIVE_UPDATE_SUPPLIER when update supplier is done', (done)=>{
+    it('creates RECEIVE_UPDATE_SUPPLIER when update supplier succeeds', (done)=>{
       //nock.disableNetConnect();
       //nock.enableNetConnect('127.0.0.1');
       nock('http://localhost')
@@ -59,26 +59,51 @@ describe('async supplier operations', () => {
             'region':'Quebec','country':'Canada','masterId':1,'master':'Advantage',
             'phone':'12345678','email':'test2xx@ezpartorder.com'
         })
-        .reply(201, {supplierId:'2'})
-
-        const expectedActions = [
-          {
-            type: types.REQUEST_UPDATE_SUPPLIER,
-            supplierId:'2'
-          },
-          {
-            type: types.RECEIVE_UPDATE_SUPPLIER,
-            supplierId:'2'
-          }
-        ]
+        .reply(201, {isSuccess:true, info:'success'})
         let supplier = {'supplierId':2,'supplierName':'Test Shop 2xx','address':'2xxst Avenue','city':'Montreal',
           'region':'Quebec','country':'Canada','masterId':1,'master':'Advantage',
           'phone':'12345678','email':'test2xx@ezpartorder.com'}
+        const expectedActions = [
+          {
+            type: types.REQUEST_UPDATE_SUPPLIER,
+            supplierId:2
+          },
+          {
+            type: types.RECEIVE_UPDATE_SUPPLIER,
+            isSuccess:true,
+            info:'success',
+            supplier
+          }
+        ]
+        const store = mockStore({}, expectedActions, done)
+        store.dispatch(actions.fetchUpdateSupplier(supplier))
+    })
+    it('creates RECEIVE_UPDATE_SUPPLIER when update supplier fails due to violation of constraints', (done)=>{
+      //nock.disableNetConnect();
+      //nock.enableNetConnect('127.0.0.1');
+      let supplier = {'supplierId':2,'supplierName':'Test Shop @@','address':'2xxst Avenue','city':'Montreal',
+        'region':'Quebec','country':'Canada','masterId':1,'master':'Advantage',
+        'phone':'12345678','email':'test2xx@ezpartorder.com'}
+      nock('http://localhost')
+        .post('/json/suppliers', supplier)
+        .reply(201, {isSuccess:false, info:'invalid supplier name'})
+        const expectedActions = [
+          {
+            type: types.REQUEST_UPDATE_SUPPLIER,
+            supplierId:supplier.supplierId
+          },
+          {
+            type: types.RECEIVE_UPDATE_SUPPLIER,
+            isSuccess:false,
+            info:'invalid supplier name',
+            supplier
+          }
+        ]
         const store = mockStore({}, expectedActions, done)
         store.dispatch(actions.fetchUpdateSupplier(supplier))
     })
 
-    it('creates FAILED_UPDATE_SUPPLIER when something is wrong with the API', (done)=>{
+    it('creates FAILED_UPDATE_SUPPLIER when API replies 400+', (done)=>{
       //nock.disableNetConnect();
       //nock.enableNetConnect('127.0.0.1');
       nock('http://localhost')
@@ -105,5 +130,4 @@ describe('async supplier operations', () => {
         const store = mockStore({}, expectedActions, done)
         store.dispatch(actions.fetchUpdateSupplier(supplier))
     })
-
 })

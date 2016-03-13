@@ -7,7 +7,7 @@ describe('order reducer', ()=>{
     expect(
       orderReducer(undefined, {})
     ).toEqual({
-      orderList:{}, isFetchingOrderList:false, isUpdatingOrder: false
+      orderList:{}, isFetchingOrderList:false, isUpdatingOrder: false, failedUpdateOrder: false,failedFetchingOrderList:false
     })
   })
 
@@ -172,6 +172,28 @@ describe('order reducer', ()=>{
       ],
       isUpdatingSuccess:false,
       info:'po number is invalid'
+    })
+  })
+
+  it('should handle FAILED_UPDATE_ORDER', ()=>{
+    let error = new Error(400)
+    expect(
+      orderReducer(
+        {
+          isUpdatingOrder: true,
+          failedUpdateOrder: false,
+          updatingOrderId: 1
+        },
+        {
+          type: types.FAILED_UPDATE_ORDER,
+          error
+        }
+      )
+    ).toEqual({
+      isUpdatingOrder: false,
+      failedUpdateOrder: true,
+      error,
+      updatingOrderId:1
     })
   })
 })

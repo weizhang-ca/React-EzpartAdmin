@@ -1,8 +1,8 @@
 import {SAVE_GARAGE, REMOVE_GARAGE, ADD_GARAGE, GET_GARAGE_LIST, DISPLAY_SUPPLIERLIST,
-  REQUEST_GARAGE_LIST, RECEIVE_GARAGE_LIST,FETCH_GARAGELIST_FAILED, REQUEST_UPDATE_GARAGE,
+  REQUEST_GARAGE_LIST, RECEIVE_GARAGE_LIST,FAILED_FETCH_GARAGE_LIST, REQUEST_UPDATE_GARAGE,
   RECEIVE_UPDATE_GARAGE, FAILED_UPDATE_GARAGE } from '../constants/ActionTypes';
 import assign from 'object-assign';
-const initialState = {garageList:[], isFetchingGarageList:false, isUpdatingGarage:false,fetchGarageListFailed:false}
+const initialState = {garageList:[], isFetchingGarageList:false, isUpdatingGarage:false,failedFetchGarageList:false, failedUpdateGarage:false}
 export default function garageReducer(state=initialState, action){
   //console.log(action.type);
   switch(action.type){
@@ -21,14 +21,14 @@ export default function garageReducer(state=initialState, action){
     case RECEIVE_GARAGE_LIST:
       //console.log(action.garageList);
       return Object.assign({}, state, {garageList: action.garageList, isFetchingGarageList:false})
-    case FETCH_GARAGELIST_FAILED:
-      return Object.assign({}, state, {isFetchingGarageList: false, fetchGarageListFailed:true, error:action.error})
+    case FAILED_FETCH_GARAGE_LIST:
+      return Object.assign({}, state, {isFetchingGarageList: false, failedFetchGarageList:true, error:action.error})
     case REQUEST_UPDATE_GARAGE:
       return Object.assign({}, state, {isUpdatingGarage: true, updatingGarageId: action.garageId})
     case RECEIVE_UPDATE_GARAGE:
-      return Object.assign({}, state, {isUpdatingGarage: false, updatingGarageId: action.garageId})
+      return Object.assign({}, state, {isUpdatingGarage: false})
     case FAILED_UPDATE_GARAGE:
-      return Object.assign({}, state, {error:action.error, asyncOpGarageId:action.garageId})
+      return Object.assign({}, state, {error:action.error, isUpdatingGarage: false, failedUpdateGarage:true})
     default:
       return state;
   }

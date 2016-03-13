@@ -11,7 +11,8 @@ describe('garage reducer', () => {
         garageList:[],
         isFetchingGarageList:false,
         isUpdatingGarage:false,
-        fetchGarageListFailed:false
+        failedFetchGarageList:false,
+        failedUpdateGarage: false
       }
     )
   })
@@ -60,6 +61,24 @@ describe('garage reducer', () => {
     )
   })
 
+  it('should handle FAILED_FETCH_GARAGE_LIST', ()=>{
+    let error = new Error(400)
+    expect(
+      garageReducer(
+        {
+          isFetchingGarageList:true
+        },
+        {
+          type: types.FAILED_FETCH_GARAGE_LIST,
+          error
+        }
+    )
+  ).toEqual({
+    isFetchingGarageList: false,
+    failedFetchGarageList: true,
+    error
+  })
+  })
   it('should handle REQUEST_UPDATE_GARAGE', ()=>{
     expect(
       garageReducer(
@@ -74,11 +93,32 @@ describe('garage reducer', () => {
   it('should handle RECEIVE_UPDATE_GARAGE', ()=>{
     expect(
       garageReducer(
-        {isUpdatingGarage:true},
-        {type:types.RECEIVE_UPDATE_GARAGE, garageId:'2'}
+        {isUpdatingGarage:true, updatingGarageId:'2'},
+        {type:types.RECEIVE_UPDATE_GARAGE}
       )
     ).toEqual({
       isUpdatingGarage:false, updatingGarageId:'2'
+    })
+  })
+
+  it('should handle FAILED_UPDATE_GARAGE', ()=>{
+    let error = new Error(400)
+    expect(
+      garageReducer(
+        {
+          isUpdatingGarage:true,
+          updatingGarageId: 2
+        },
+        {
+          type: types.FAILED_UPDATE_GARAGE,
+          error
+        }
+      )
+    ).toEqual({
+      isUpdatingGarage:false,
+      failedUpdateGarage: true,
+      error,
+      updatingGarageId: 2
     })
   })
 })

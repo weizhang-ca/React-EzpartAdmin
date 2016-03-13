@@ -37,14 +37,14 @@ describe('async garage operations', () => {
     store.dispatch(actions.fetchGarageList())
   })
 
-  it('creates FETCH_GARAGELIST_FAILED when something wrong with the API', (done) => {
+  it('creates FAILED_FETCH_GARAGE_LIST when API replies 400+', (done) => {
     nock('http://localhost')
       .get('/garage')
       .reply(400)
     let error = new Error('400')
     const expectedActions = [
       { type: types.REQUEST_GARAGE_LIST },
-      { type: types.FETCH_GARAGELIST_FAILED,
+      { type: types.FAILED_FETCH_GARAGE_LIST,
         error}
     ]
     const store = mockStore({ garage: {} }, expectedActions, done)
@@ -79,7 +79,7 @@ describe('async garage operations', () => {
         store.dispatch(actions.fetchUpdateGarage(garage))
     })
 
-    it('creates FAILED_UPDATE_GARAGE when something is wrong with the API', (done)=>{
+    it('creates FAILED_UPDATE_GARAGE when API replies 400+', (done)=>{
       //nock.disableNetConnect();
       //nock.enableNetConnect('127.0.0.1');
       nock('http://localhost')

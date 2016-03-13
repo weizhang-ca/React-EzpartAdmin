@@ -3,7 +3,7 @@ import {
   FAILED_FETCH_ORDER_LIST, FAILED_UPDATE_ORDER
 } from '../constants/ActionTypes'
 
-var initialState = {orderList:{}, isFetchingOrderList:false, isUpdatingOrder: false}
+var initialState = {orderList:{}, isFetchingOrderList:false, isUpdatingOrder: false, failedUpdateOrder: false, failedFetchingOrderList:false}
 export default function orderReducer(state=initialState, action){
   switch(action.type){
     case REQUEST_ORDER_LIST:
@@ -19,12 +19,13 @@ export default function orderReducer(state=initialState, action){
           state.orderList.some((order)=>{
             if(order.orderId == action.order.orderId){
               order = Object.assign(order, action.order)
+              return true
             }
           })
       }
-      return Object.assign({}, state, {isUpdatingOrder: false, updatingOrderId:action.order.orderId, isUpdatingSuccess:action.isSuccess, info:action.info})
+      return Object.assign({}, state, {isUpdatingOrder: false,isUpdatingSuccess:action.isSuccess, info:action.info})
     case FAILED_UPDATE_ORDER:
-      return Object.assign({}, state, {isUpdatingOrder: false, updatingOrderId:action.orderId, error: action.error})
+      return Object.assign({}, state, {isUpdatingOrder: false, failedUpdateOrder:true, error: action.error})
     default:
       return state
   }

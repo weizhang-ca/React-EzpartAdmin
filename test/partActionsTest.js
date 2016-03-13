@@ -58,9 +58,8 @@ describe('async part operations', ()=>{
         nock('http://localhost')
           .get('/json/parts')
           .reply(400)
-          let orderId = 2
+          var orderId = 2
           let error = new Error(400)
-          console.log(error)
           const expectedActions = [
             {type: types.REQUEST_PART_LIST, orderId},
             {
@@ -70,5 +69,83 @@ describe('async part operations', ()=>{
           ]
           const store = mockStore({}, expectedActions, done)
           store.dispatch(actions.fetchPartList(orderId))
+    })
+
+    it('create RECEIVE_UPDATE_PART when update part succeed', (done)=>{
+      let part = {
+        partId:1, partName:'Test Part 1', partNumber:'123456', partList:50.00,
+        partNet: 45.00, partType:'OEM', dateOrder:'2016-01-01', dateBo:'2016-01-01',
+        dateShip:'2016-01-02', dateReceive:'2016-01-03', dateReturn:'2016-01-10',
+        partStatus:'Returned'
+      }
+      nock('http://localhost')
+        .intercept('/json/parts', 'PUT', part)
+        .reply(201, {isSuccess:true, info:'success'})
+      const expectedActions = [
+        {
+          type: types.REQUEST_UPDATE_PART,
+          partId: part.partId
+        },
+        {
+          type: types.RECEIVE_UPDATE_PART,
+          part,
+          isSuccess: true,
+          info: 'success'
+        }
+      ]
+      const store = mockStore({}, expectedActions, done)
+      store.dispatch(actions.updatePart(part))
+    })
+
+    it('create RECEIVE_UPDATE_PART when update part fails due to violation of constraints', (done)=>{
+      let part = {
+        partId:1, partName:'Test Part 1', partNumber:'123456', partList:50.00,
+        partNet: 55.00, partType:'OEM', dateOrder:'2016-01-01', dateBo:'2016-01-01',
+        dateShip:'2016-01-02', dateReceive:'2016-01-03', dateReturn:'2016-01-10',
+        partStatus:'Returned'
+      }
+      nock('http://localhost')
+        .intercept('/json/parts', 'PUT', part)
+        .reply(201, {isSuccess: false, info:'net price must not be greater than list price'})
+
+      const expectedActions = [
+        {
+          type: types.REQUEST_UPDATE_PART,
+          partId: part.partId
+        },
+        {
+          type: types. RECEIVE_UPDATE_PART,
+          isSuccess: false,
+          info: 'net price must not be greater than list price',
+          part
+        }
+      ]
+      const store = mockStore({}, expectedActions, done)
+      store.dispatch(actions.updatePart(part))
+    })
+
+    it('create FAILED_UPDATE_PART when API replies 400+', (done)=>{
+      let part = {
+        partId:1, partName:'Test Part 1', partNumber:'123456', partList:50.00,
+        partNet: 55.00, partType:'OEM', dateOrder:'2016-01-01', dateBo:'2016-01-01',
+        dateShip:'2016-01-02', dateReceive:'2016-01-03', dateReturn:'2016-01-10',
+        partStatus:'Returned'
+      }
+      nock('http://localhost')
+        .intercept('/json/parts', 'PUT', part)
+        .reply(400)
+      let error = new Error(400)
+      const expectedActions = [
+        {
+          type: types.REQUEST_UPDATE_PART,
+          partId: part.partId
+        },
+        {
+          type: types.FAILED_UPDATE_PART,
+          error
+        }
+      ]
+      const store = mockStore({}, expectedActions, done)
+      store.dispatch(actions.updatePart(part))
     })
 })
